@@ -26,11 +26,6 @@ const Hero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           {/* Content */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-primary-600 mb-6 shadow-sm">
-              <Zap className="w-4 h-4" />
-              AI-Powered Real Estate Intelligence
-            </div>
-
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-900 mt-8">
               Your Digital Co-Pilot for{' '}
               <span className="gradient-text">Commercial Real Estate</span>

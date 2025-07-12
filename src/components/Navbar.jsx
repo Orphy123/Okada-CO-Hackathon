@@ -83,10 +83,6 @@ const Navbar = () => {
                 <span className="text-xl font-bold bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-transparent">
                   ORPHY AI
                 </span>
-                <div className="flex items-center gap-1 text-xs text-gray-500">
-                  <img src="/orphyAI.png" alt="ORPHY AI" className="w-3 h-3 object-contain" />
-                  <span>Powered by AI</span>
-                </div>
               </div>
             </div>
 
@@ -182,10 +178,6 @@ const Navbar = () => {
                 />
                 <div>
                   <div className="font-bold text-gray-900">ORPHY AI</div>
-                  <div className="text-xs text-gray-500 flex items-center gap-1">
-                    <img src="/orphyAI.png" alt="ORPHY AI" className="w-3 h-3 object-contain" />
-                    Powered by AI
-                  </div>
                 </div>
               </div>
               <button
