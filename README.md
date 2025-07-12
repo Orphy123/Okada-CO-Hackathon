@@ -178,28 +178,6 @@ The RAG system can be configured in `app/rag.py`:
 - `top_k`: Number of documents to retrieve (default: 3)
 - `similarity_threshold`: Minimum similarity score (default: 0.1)
 
-## GitHub Auto-Sync
-
-This repository includes **automatic GitHub synchronization** for seamless development:
-
-### 🔄 **Automatic Push** (Active)
-Every commit automatically pushes to GitHub - no manual `git push` needed!
-
-```bash
-# Your normal workflow
-git add .
-git commit -m "Added new feature"
-# ✨ Automatically pushed to GitHub!
-```
-
-### ⚡ **Quick Save** (Optional)
-For rapid development, use the quick save command:
-
-```bash
-git save  # Adds all files, commits with timestamp, and pushes
-```
-
-**That's it!** Simple, reliable, automatic backup to GitHub with every commit.
 
 ## Development
 
