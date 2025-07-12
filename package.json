@@ -1,0 +1,12 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "A modern, fast conversational AI chatbot built with FastAPI that implements Retrieval-Augmented Generation (RAG) to provide context-aware responses based on your knowledge base.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

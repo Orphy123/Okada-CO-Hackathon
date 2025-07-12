@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI CRE Portfolio Assistant - Intelligent Real Estate Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-building"></i>
+                <span>AI CRE Assistant</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#chat" class="nav-link">Chat</a>
+                <a href="#portfolio" class="nav-link">Portfolio</a>
+                <a href="#documents" class="nav-link">Documents</a>
+                <a href="#insights" class="nav-link">Insights</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-outline" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                <button class="btn btn-primary" onclick="showSignupModal()">
+                    <i class="fas fa-user-plus"></i>
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-sparkles"></i>
+                    <span>AI-Powered Real Estate Intelligence</span>
+                </div>
+                <h1 class="hero-title">
+                    Your Digital Co-Pilot for
+                    <span class="gradient-text">Commercial Real Estate</span>
+                </h1>
+                <p class="hero-description">
+                    Transform complex property searches into simple conversations. Analyze portfolios, 
+                    discover opportunities, and make data-driven decisions with our advanced AI assistant.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-large" onclick="scrollToSection('chat')">
+                        <i class="fas fa-comments"></i>
+                        Start Analyzing
+                    </button>
+                    <button class="btn btn-outline btn-large" onclick="scrollToSection('portfolio')">
+                        <i class="fas fa-chart-line"></i>
+                        View Demo
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">$2.5B+</span>
+                        <span class="stat-label">Properties Analyzed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Documents Processed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Accuracy Rate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-dashboard">
+                    <div class="dashboard-header">
+                        <div class="dashboard-title">
+                            <i class="fas fa-robot"></i>
+                            <span>AI Assistant</span>
+                        </div>
+                        <div class="status-indicator online"></div>
+                    </div>
+                    <div class="dashboard-content">
+                        <div class="chat-preview">
+                            <div class="message ai-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <p>I found 12 properties above 15,000 SF with rent below $90/SF. Average GCI is $275K over 3 years.</p>
+                                </div>
+                            </div>
+                            <div class="message user-message">
+                                <div class="message-content">
+                                    <p>Show me properties above 15,000 SF with rent below $90/SF</p>
+                                </div>
+                                <div class="message-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="metrics-preview">
+                            <div class="metric">
+                                <span class="metric-value">$85.2</span>
+                                <span class="metric-label">Avg Rent/SF</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">17.5K</span>
+                                <span class="metric-label">Avg Size SF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Intelligent Real Estate Analysis</h2>
+                <p>Everything you need to make informed commercial real estate decisions</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Natural Language Chat</h3>
+                    <p>Ask questions in plain English and get intelligent responses powered by advanced RAG technology.</p>
+                    <ul class="feature-list">
+                        <li>Context-aware conversations</li>
+                        <li>Document-based insights</li>
+                        <li>Multi-turn dialogue support</li>
+                        <li>Conversation history tracking</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search-dollar"></i>
+                    </div>
+                    <h3>Portfolio Analysis</h3>
+                    <p>Query your real estate portfolio using natural language and get detailed market insights.</p>
+                    <ul class="feature-list">
+                        <li>Smart property filtering</li>
+                        <li>Investment opportunity scoring</li>
+                        <li>Market trend analysis</li>
+                        <li>Visual reports & charts</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <h3>Document Intelligence</h3>
+                    <p>Upload property documents and let AI extract insights to enhance your knowledge base.</p>
+                    <ul class="feature-list">
+                        <li>PDF, CSV, JSON, TXT support</li>
+                        <li>Automatic data extraction</li>
+                        <li>Semantic search capabilities</li>
+                        <li>Knowledge base enrichment</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3>CRM Integration</h3>
+                    <p>Track client interactions, tag conversations, and manage relationships seamlessly.</p>
+                    <ul class="feature-list">
+                        <li>Client conversation tracking</li>
+                        <li>Intent classification</li>
+                        <li>Follow-up automation</li>
+                        <li>Performance analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Interface -->
+    <section id="chat" class="chat-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>AI Chat Assistant</h2>
+                <p>Ask questions about properties, markets, and investments in natural language</p>
+            </div>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-status">
+                        <div class="status-dot online"></div>
+                        <span>AI Assistant Online</span>
+                        <div class="chat-info">
+                            <span id="chatUserInfo">Guest User</span>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="btn btn-sm btn-outline" onclick="clearChat()" title="Clear Chat">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline" onclick="exportChat()" title="Export Chat">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline" onclick="toggleChatSettings()" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Hello! I'm your AI Commercial Real Estate Assistant. I can help you:</p>
+                            <ul>
+                                <li>Analyze property portfolios</li>
+                                <li>Find investment opportunities</li>
+                                <li>Answer questions about market data</li>
+                                <li>Process and search through documents</li>
+                            </ul>
+                            <p>What would you like to explore today?</p>
+                            <span class="message-time">Just now</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <div class="quick-actions">
+                        <button class="quick-btn" onclick="sendQuickMessage('Show me properties above 15,000 SF with rent below $90/SF')">
+                            <i class="fas fa-building"></i>
+                            Large Properties
+                        </button>
+                        <button class="quick-btn" onclick="sendQuickMessage('What is the average rent per square foot in my portfolio?')">
+                            <i class="fas fa-dollar-sign"></i>
+                            Average Rent
+                        </button>
+                        <button class="quick-btn" onclick="sendQuickMessage('Find properties with high GCI potential')">
+                            <i class="fas fa-chart-line"></i>
+                            High GCI
+                        </button>
+                        <button class="quick-btn" onclick="sendQuickMessage('Show me Broadway properties')">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Location Search
+                        </button>
+                    </div>
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="chatInput" placeholder="Ask me anything about commercial real estate..." />
+                        <button class="send-btn" onclick="sendMessage()" id="sendButton">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Analysis -->
+    <section id="portfolio" class="portfolio-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Portfolio Analysis</h2>
+                <p>Analyze your commercial real estate portfolio with natural language queries</p>
+            </div>
+            <div class="portfolio-container">
+                <div class="portfolio-query-panel">
+                    <div class="query-header">
+                        <h3>Natural Language Query</h3>
+                        <p>Describe what you're looking for in plain English</p>
+                    </div>
+                    <div class="query-input-wrapper">
+                        <div class="query-input-container">
+                            <textarea id="portfolioQuery" placeholder="e.g., Show me all properties above 15,000 SF with rent below $90/SF and GCI above $250K over 3 years"></textarea>
+                            <button class="btn btn-primary" onclick="analyzePortfolio()" id="analyzeButton">
+                                <i class="fas fa-search"></i>
+                                Analyze Portfolio
+                            </button>
+                        </div>
+                    </div>
+                    <div class="query-options">
+                        <div class="option-group">
+                            <h4>Output Options</h4>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="generateChart">
+                                <span class="checkmark"></span>
+                                <span class="label-text">
+                                    <i class="fas fa-chart-bar"></i>
+                                    Generate Visual Chart
+                                </span>
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="downloadCsv">
+                                <span class="checkmark"></span>
+                                <span class="label-text">
+                                    <i class="fas fa-file-csv"></i>
+                                    Export to CSV
+                                </span>
+                            </label>
+                        </div>
+                        <div class="example-queries">
+                            <h4>Example Queries</h4>
+                            <div class="example-buttons">
+                                <button class="example-btn" onclick="setQuery('Properties larger than 18,000 square feet')">
+                                    Large Properties
+                                </button>
+                                <button class="example-btn" onclick="setQuery('Properties with rent under $85 per square foot')">
+                                    Affordable Rent
+                                </button>
+                                <button class="example-btn" onclick="setQuery('High GCI properties above $300,000')">
+                                    High GCI
+                                </button>
+                                <button class="example-btn" onclick="setQuery('Properties on Broadway or Times Square')">
+                                    Prime Locations
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-results" id="portfolioResults">
+                    <div class="results-placeholder">
+                        <div class="placeholder-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Ready to Analyze</h3>
+                        <p>Enter a query above to discover insights about your portfolio</p>
+                        <div class="placeholder-stats">
+                            <div class="placeholder-stat">
+                                <span class="stat-number">225</span>
+                                <span class="stat-label">Properties Available</span>
+                            </div>
+                            <div class="placeholder-stat">
+                                <span class="stat-number">$94.23</span>
+                                <span class="stat-label">Avg Rent/SF</span>
+                            </div>
+                            <div class="placeholder-stat">
+                                <span class="stat-number">14.5K</span>
+                                <span class="stat-label">Avg Size SF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Document Management -->
+    <section id="documents" class="docs-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Document Intelligence</h2>
+                <p>Upload and manage your real estate documents to enhance AI insights</p>
+            </div>
+            <div class="docs-container">
+                <div class="upload-panel">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <h3>Upload Documents</h3>
+                            <p>Drag and drop files here or click to browse</p>
+                            <p class="upload-formats">
+                                <i class="fas fa-file-pdf"></i> PDF
+                                <i class="fas fa-file-csv"></i> CSV
+                                <i class="fas fa-file-code"></i> JSON
+                                <i class="fas fa-file-alt"></i> TXT
+                            </p>
+                            <input type="file" id="fileInput" multiple accept=".pdf,.csv,.json,.txt" hidden>
+                            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-folder-open"></i>
+                                Choose Files
+                            </button>
+                        </div>
+                    </div>
+                    <div class="upload-progress" id="uploadProgress" style="display: none;">
+                        <div class="progress-header">
+                            <h4>Processing Documents</h4>
+                            <span id="progressText">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-details" id="progressDetails">
+                            Analyzing document content...
+                        </div>
+                    </div>
+                </div>
+                <div class="docs-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalDocs">0</span>
+                            <span class="stat-label">Documents</span>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12 this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalChunks">0</span>
+                            <span class="stat-label">Text Chunks</span>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+156 this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="indexStatus">Ready</span>
+                            <span class="stat-label">Index Status</span>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Optimized</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="aiAccuracy">99.9%</span>
+                            <span class="stat-label">AI Accuracy</span>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+0.2% this month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insights Dashboard -->
+    <section id="insights" class="insights-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Market Insights</h2>
+                <p>Real-time analytics and trends from your portfolio data</p>
+            </div>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <h3>Portfolio Overview</h3>
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="insight-content">
+                        <div class="metric-large">
+                            <span class="metric-value">$2.5B</span>
+                            <span class="metric-label">Total Portfolio Value</span>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric-small">
+                                <span class="metric-value">225</span>
+                                <span class="metric-label">Properties</span>
+                            </div>
+                            <div class="metric-small">
+                                <span class="metric-value">3.2M</span>
+                                <span class="metric-label">Total SF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <h3>Market Trends</h3>
+                        <i class="fas fa-trending-up"></i>
+                    </div>
+                    <div class="insight-content">
+                        <div class="trend-item">
+                            <span class="trend-label">Avg Rent/SF</span>
+                            <span class="trend-value">$94.23</span>
+                            <span class="trend-change positive">+2.1%</span>
+                        </div>
+                        <div class="trend-item">
+                            <span class="trend-label">Occupancy Rate</span>
+                            <span class="trend-value">92.5%</span>
+                            <span class="trend-change positive">+1.8%</span>
+                        </div>
+                        <div class="trend-item">
+                            <span class="trend-label">Cap Rate</span>
+                            <span class="trend-value">6.2%</span>
+                            <span class="trend-change negative">-0.3%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <h3>Top Opportunities</h3>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="insight-content">
+                        <div class="opportunity-item">
+                            <div class="opportunity-info">
+                                <span class="opportunity-address">1412 Broadway</span>
+                                <span class="opportunity-details">19,712 SF • $107/SF</span>
+                            </div>
+                            <span class="opportunity-score">9.2</span>
+                        </div>
+                        <div class="opportunity-item">
+                            <div class="opportunity-info">
+                                <span class="opportunity-address">345 Seventh Ave</span>
+                                <span class="opportunity-details">18,591 SF • $100/SF</span>
+                            </div>
+                            <span class="opportunity-score">8.9</span>
+                        </div>
+                        <div class="opportunity-item">
+                            <div class="opportunity-info">
+                                <span class="opportunity-address">9 Times Square</span>
+                                <span class="opportunity-details">18,890 SF • $94/SF</span>
+                            </div>
+                            <span class="opportunity-score">8.7</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <h3>AI Activity</h3>
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="insight-content">
+                        <div class="activity-item">
+                            <i class="fas fa-comments"></i>
+                            <div class="activity-info">
+                                <span class="activity-title">156 Conversations</span>
+                                <span class="activity-subtitle">This week</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-search"></i>
+                            <div class="activity-info">
+                                <span class="activity-title">89 Portfolio Queries</span>
+                                <span class="activity-subtitle">This week</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-file-upload"></i>
+                            <div class="activity-info">
+                                <span class="activity-title">23 Documents Processed</span>
+                                <span class="activity-subtitle">This week</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-building"></i>
+                    <span>AI CRE Assistant</span>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Product</h4>
+                        <a href="#" class="footer-link">Features</a>
+                        <a href="#" class="footer-link">Pricing</a>
+                        <a href="#" class="footer-link">API Documentation</a>
+                        <a href="#" class="footer-link">Integrations</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Company</h4>
+                        <a href="#" class="footer-link">About Us</a>
+                        <a href="#" class="footer-link">Careers</a>
+                        <a href="#" class="footer-link">Press</a>
+                        <a href="#" class="footer-link">Contact</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Resources</h4>
+                        <a href="#" class="footer-link">Help Center</a>
+                        <a href="#" class="footer-link">Community</a>
+                        <a href="#" class="footer-link">Blog</a>
+                        <a href="#" class="footer-link">Webinars</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                        <a href="#" class="footer-link">Terms of Service</a>
+                        <a href="#" class="footer-link">Security</a>
+                        <a href="#" class="footer-link">Compliance</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AI CRE Portfolio Assistant. Powered by advanced AI and machine learning.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Welcome Back</h3>
+                <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>Don't have an account? <a href="#" onclick="closeModal('loginModal'); showSignupModal();">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Get Started</h3>
+                <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupCompany">Company (Optional)</label>
+                        <input type="text" id="signupCompany">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>Already have an account? <a href="#" onclick="closeModal('signupModal'); showLoginModal();">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
