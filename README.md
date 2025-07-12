@@ -1,51 +1,75 @@
-# RAG-Enabled Conversational AI Chatbot
+# 🏢 AI Real Estate Portfolio Assistant
 
-A modern, fast conversational AI chatbot built with FastAPI that implements Retrieval-Augmented Generation (RAG) to provide context-aware responses based on your knowledge base.
+A modern, intelligent conversational AI chatbot built with FastAPI that combines Retrieval-Augmented Generation (RAG) with natural language portfolio analysis for commercial real estate.
 
-## Features
+## 🚀 Live Demo
 
-### 🚀 Core Functionality
-- **FastAPI Backend**: High-performance API with automatic interactive documentation
-- **OpenAI Integration**: Powered by GPT-3.5-turbo for intelligent responses
-- **RAG System**: Retrieval-Augmented Generation for context-aware answers
-- **Multi-format Document Support**: Upload PDF, DOCX, and TXT files
-- **Smart Document Processing**: Automatic text extraction and chunking
+- **Frontend**: [Your Live Site](https://your-domain.com)
+- **API Documentation**: [API Docs](https://your-api-domain.com/docs)
+- **GitHub Repository**: [okadatrial](https://github.com/Orphy123/okadatrial)
+
+## ✨ Features
+
+### 🤖 Core AI Capabilities
+- **RAG-Powered Chat**: Context-aware responses using uploaded documents
+- **OpenAI Integration**: Powered by GPT-3.5-turbo for intelligent conversations
+- **Multi-format Document Support**: PDF, DOCX, TXT, CSV, JSON
 - **Semantic Search**: TF-IDF vectorization for efficient document retrieval
 
-### 🏢 **Natural Language Portfolio Analyzer** (NEW!)
-- **Natural Language Queries**: "Show me all properties above 15,000 SF with rent below $90/SF and GCI above $250K over 3 years"
-- **Intelligent Data Filtering**: Automatically parses queries and applies structured filters
-- **AI-Generated Summaries**: Comprehensive insights and analysis of filtered results
-- **Real Estate Data Integration**: Works with commercial property CSV data
-- **Portfolio Statistics**: Overview metrics and performance indicators
+### 🏢 Portfolio Analysis
+- **Natural Language Queries**: "Show me properties above 15,000 SF with rent below $90/SF"
+- **Intelligent Data Filtering**: Automatic query parsing and structured filtering
+- **AI-Generated Insights**: Comprehensive analysis and summaries
+- **Portfolio Statistics**: Performance metrics and overview data
 
-### 📋 API Endpoints
-- `POST /chat/` - Chat with the AI (with optional RAG)
-- `POST /chat/upload_docs` - Upload documents to knowledge base
-- `POST /chat/add-documents` - Add text documents via JSON
-- `POST /analyze/analyze_portfolio` - **NEW!** Natural language portfolio analysis
-- `GET /analyze/portfolio_stats` - **NEW!** Portfolio statistics and metrics
-- `GET /docs` - Interactive API documentation
+### 💼 CRM Integration
+- **Conversation Logging**: All interactions stored in SQLite database
+- **User Management**: Complete user tracking and session management
+- **Message Tagging**: Automatic categorization of conversations
+- **History Persistence**: Conversation continuity across sessions
 
-### 🔧 Technical Stack
-- **Backend**: FastAPI + Uvicorn
-- **AI**: OpenAI GPT-3.5-turbo
-- **RAG**: scikit-learn TF-IDF + cosine similarity
-- **Document Processing**: PyPDF2, python-docx, chardet
-- **Data Storage**: Pickle files for persistent knowledge base
+### 📊 Analytics Dashboard
+- **Portfolio Statistics**: Real-time property metrics
+- **Interactive Charts**: Visual data representation
+- **Export Capabilities**: Data export in multiple formats
+- **Performance Tracking**: Investment analysis tools
 
-## Installation
+## 🛠️ Tech Stack
+
+### Backend
+- **FastAPI**: High-performance async API framework
+- **SQLAlchemy**: Database ORM with SQLite
+- **OpenAI API**: GPT-3.5-turbo for AI responses
+- **scikit-learn**: Machine learning for document similarity
+- **Pandas**: Data manipulation and analysis
+- **Uvicorn**: ASGI server for production
+
+### Frontend
+- **Vanilla JavaScript**: Modern ES6+ features
+- **CSS3**: Responsive design with Flexbox/Grid
+- **HTML5**: Semantic markup
+- **Font Awesome**: Icon library
+- **Google Fonts**: Typography
+
+### AI & ML
+- **OpenAI GPT-3.5**: Language model for conversations
+- **TF-IDF Vectorization**: Document similarity search
+- **Natural Language Processing**: Query parsing and analysis
+- **RAG Architecture**: Retrieval-Augmented Generation
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.7+
+- Python 3.11+
 - OpenAI API key
+- Git
 
-### Setup Instructions
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Orphy123/OkadaHackathon.git
-   cd OkadaHackathon
+   git clone https://github.com/Orphy123/okadatrial.git
+   cd okadatrial
    ```
 
 2. **Install dependencies**
@@ -53,190 +77,222 @@ A modern, fast conversational AI chatbot built with FastAPI that implements Retr
    pip install -r requirements.txt
    ```
 
-3. **Configure environment variables**
+3. **Set up environment variables**
    ```bash
    # Create .env file
    echo "OPENAI_API_KEY=your-openai-api-key-here" > .env
    ```
 
-4. **Start the server**
+4. **Initialize the database**
+   ```bash
+   python setup_project.py
+   ```
+
+5. **Load sample data**
+   ```bash
+   python ingest_knowledge_base.py
+   ```
+
+6. **Start the server**
    ```bash
    uvicorn app.main:app --reload --port 8000
    ```
 
-5. **Access the application**
-   - API: http://localhost:8000
-   - Interactive Docs: http://localhost:8000/docs
+7. **Open your browser**
+   - Frontend: http://localhost:8000
+   - API Docs: http://localhost:8000/docs
 
-## Usage
+## 🐳 Docker Deployment
 
-### Chat with AI
+### Using Docker Compose (Recommended)
+```bash
+# Clone and setup
+git clone https://github.com/Orphy123/okadatrial.git
+cd okadatrial
 
+# Create .env file
+echo "OPENAI_API_KEY=your-key-here" > .env
+
+# Build and run
+docker-compose up --build
+```
+
+### Using Docker only
+```bash
+# Build image
+docker build -t rag-chatbot .
+
+# Run container
+docker run -p 8000:8000 -e OPENAI_API_KEY=your-key-here rag-chatbot
+```
+
+## 🌍 Production Deployment
+
+### Option 1: Railway (Recommended)
+1. Push your code to GitHub
+2. Connect to [Railway](https://railway.app)
+3. Add `OPENAI_API_KEY` environment variable
+4. Deploy automatically
+
+### Option 2: Render
+1. Connect your GitHub repository to [Render](https://render.com)
+2. Add environment variables
+3. Deploy with the included `Procfile`
+
+### Option 3: VPS/Cloud Server
+```bash
+# Install dependencies
+sudo apt update && sudo apt install python3-pip nginx
+
+# Clone repository
+git clone https://github.com/Orphy123/okadatrial.git
+cd okadatrial
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Setup with PM2
+npm install -g pm2
+pm2 start "uvicorn app.main:app --host 0.0.0.0 --port 8000" --name rag-chatbot
+pm2 startup
+pm2 save
+```
+
+## 📋 API Reference
+
+### Chat Endpoints
+- `POST /chat/` - Chat with AI assistant
+- `POST /chat/upload_docs` - Upload documents for RAG
+- `POST /chat/add-documents` - Add documents via JSON
+
+### Portfolio Analysis
+- `POST /analyze/analyze_portfolio` - Natural language portfolio queries
+- `GET /analyze/portfolio_stats` - Portfolio statistics
+
+### CRM Management
+- `POST /crm/create_user` - Create new user
+- `GET /crm/conversations/{user_id}` - Get conversation history
+- `PUT /crm/tag_message` - Tag messages
+
+## 📊 Example Usage
+
+### Chat with RAG
 ```bash
 curl -X POST "http://localhost:8000/chat/" \
   -H "Content-Type: application/json" \
   -d '{
     "user_id": "user123",
-    "message": "What is FastAPI?",
+    "message": "What properties do you recommend for investment?",
     "use_rag": true
   }'
 ```
 
-### Upload Documents
-
+### Portfolio Analysis
 ```bash
-# Single file
-curl -X POST "http://localhost:8000/chat/upload_docs" \
-  -F "files=@document.pdf"
-
-# Multiple files
-curl -X POST "http://localhost:8000/chat/upload_docs" \
-  -F "files=@doc1.pdf" \
-  -F "files=@doc2.docx" \
-  -F "files=@doc3.txt"
-```
-
-### Add Documents via JSON
-
-```bash
-curl -X POST "http://localhost:8000/chat/add-documents" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "documents": [
-      "FastAPI is a modern web framework for building APIs with Python.",
-      "RAG combines information retrieval with language generation."
-    ]
-  }'
-```
-
-### Portfolio Analysis (NEW!)
-
-```bash
-# Natural language portfolio query
 curl -X POST "http://localhost:8000/analyze/analyze_portfolio" \
   -H "Content-Type: application/json" \
   -d '{
     "user_id": "investor_123",
-    "query": "Show me all properties above 15,000 SF with rent below $90/SF and GCI above $250K over 3 years"
+    "query": "Show me all properties above 15,000 SF with rent below $90/SF"
   }'
-
-# Get portfolio statistics
-curl -X GET "http://localhost:8000/analyze/portfolio_stats"
 ```
 
-## Project Structure
-
-```
-okadaHack/
-├── app/
-│   ├── __init__.py
-│   ├── main.py                    # FastAPI application entry point
-│   ├── chat.py                    # Chat and upload endpoints
-│   ├── rag.py                     # RAG system implementation
-│   └── document_processor.py      # Document processing utilities
-├── data/                          # Knowledge base storage
-│   ├── documents.pkl              # Stored documents
-│   ├── vectorizer.pkl             # TF-IDF vectorizer
-│   └── tfidf_matrix.pkl           # Document vectors
-├── requirements.txt               # Python dependencies
-├── .env                          # Environment variables (not in repo)
-├── .gitignore                    # Git ignore rules
-└── README.md                     # This file
+### Document Upload
+```bash
+curl -X POST "http://localhost:8000/chat/upload_docs" \
+  -F "files=@property_analysis.pdf" \
+  -F "files=@market_report.docx"
 ```
 
-## API Reference
+## 🧪 Testing
 
-### Chat Endpoint
-
-**POST** `/chat/`
-
-**Request Body:**
-```json
-{
-  "user_id": "string",
-  "message": "string",
-  "use_rag": true
-}
+### Run All Tests
+```bash
+python test_project.py
 ```
 
-**Response:**
-```json
-{
-  "response": "string",
-  "context_used": true
-}
+### Run Specific Tests
+```bash
+# Test portfolio analysis
+python test_analyze.py
+
+# Test RAG functionality
+python test_rag_query.py
+
+# Quick health check
+python quick_test.py
 ```
 
-### Upload Documents Endpoint
-
-**POST** `/chat/upload_docs`
-
-**Request:** `multipart/form-data`
-- `files`: Array of files (PDF, DOCX, TXT)
-
-**Response:**
-```json
-{
-  "message": "Successfully processed 2 files",
-  "files_processed": 2,
-  "chunks_added": 4,
-  "failed_files": []
-}
+### Verify Setup
+```bash
+python verify_setup.py
 ```
 
-## Configuration
+## 📁 Project Structure
+
+```
+okadatrial/
+├── app/                      # FastAPI application
+│   ├── main.py              # Application entry point
+│   ├── chat.py              # Chat endpoints
+│   ├── analyze.py           # Portfolio analysis
+│   ├── rag.py               # RAG system
+│   ├── crm.py               # Database models
+│   └── document_processor.py # Document handling
+├── data/                     # Data storage
+│   └── HackathonInternalKnowledgeBase.csv
+├── models/                   # AI models (future)
+├── tests/                    # Test files
+├── index.html               # Frontend
+├── script.js                # Frontend JavaScript
+├── styles.css               # Frontend styles
+├── requirements.txt         # Python dependencies
+├── Dockerfile              # Container definition
+├── docker-compose.yml      # Multi-container setup
+├── Procfile                # Deployment configuration
+└── README.md               # This file
+```
+
+## 🔧 Configuration
 
 ### Environment Variables
-
-Create a `.env` file in the root directory:
-
 ```env
 OPENAI_API_KEY=your-openai-api-key-here
+DATABASE_URL=sqlite:///./crm.db
+DEBUG=false
+ENVIRONMENT=production
 ```
 
 ### RAG Configuration
+- **Chunk Size**: 1000 characters
+- **Overlap**: 200 characters
+- **Top-K Results**: 3 documents
+- **Similarity Threshold**: 0.1
 
-The RAG system can be configured in `app/rag.py`:
-- `chunk_size`: Size of text chunks (default: 1000)
-- `overlap`: Overlap between chunks (default: 200)
-- `top_k`: Number of documents to retrieve (default: 3)
-- `similarity_threshold`: Minimum similarity score (default: 0.1)
-
-
-## Development
-
-### Running in Development Mode
-
-```bash
-uvicorn app.main:app --reload --port 8000
-```
-
-### Adding New Document Types
-
-1. Add extraction function in `app/document_processor.py`
-2. Update `process_document()` function
-3. Add file extension to supported formats
-
-### Testing
-
-Access the interactive API documentation at http://localhost:8000/docs to test all endpoints.
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📝 License
 
-MIT License - feel free to use this project for learning and development.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🙏 Acknowledgments
 
-For issues and questions, please open an issue on GitHub.
+- OpenAI for the GPT-3.5 API
+- FastAPI for the excellent framework
+- The open-source community for the amazing tools
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/Orphy123/okadatrial/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Orphy123/okadatrial/discussions)
+- **Email**: [Your Email](mailto:your-email@example.com)
 
 ---
 
-Built with ❤️ using FastAPI, OpenAI, and modern Python practices.
+⭐ **Star this repository if you find it helpful!** ⭐
