@@ -24,7 +24,7 @@ class User(Base):
 
     conversations = relationship("Conversation", back_populates="user")
 
-# Conversation table
+# Conversation table with tag field
 class Conversation(Base):
     __tablename__ = "conversations"
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
@@ -32,8 +32,9 @@ class Conversation(Base):
     message = Column(Text)
     role = Column(String)  # 'user' or 'assistant'
     timestamp = Column(DateTime, default=datetime.utcnow)
+    tag = Column(String, default="Inquiring")  # e.g. Resolved, Unresolved, Inquiring
 
     user = relationship("User", back_populates="conversations")
 
-# Create tables
+# Create tables (only creates new ones or adds missing)
 Base.metadata.create_all(bind=engine) 
