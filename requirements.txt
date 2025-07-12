@@ -1,0 +1,11 @@
+fastapi
+openai
+uvicorn
+python-dotenv
+pydantic
+scikit-learn
+numpy
+python-multipart
+PyPDF2
+python-docx
+chardet
