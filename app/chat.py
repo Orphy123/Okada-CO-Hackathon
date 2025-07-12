@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Depends
 from pydantic import BaseModel
-import openai
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
@@ -9,7 +9,9 @@ from app.rag import query_knowledge_base
 
 load_dotenv()
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY")
+)
 
 chat_endpoint = APIRouter()
 
@@ -60,11 +62,11 @@ async def chat(request: ChatRequest, db: Session = Depends(get_db)):
 
     # Step 4: Get LLM response
     try:
-        completion = openai.ChatCompletion.create(
+        completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=history
         )
-        response = completion.choices[0].message["content"].strip()
+        response = completion.choices[0].message.content.strip()
     except Exception as e:
         response = f"Error: {str(e)}"
 
