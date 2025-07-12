@@ -168,8 +168,4 @@ $RECYCLE.BIN/
 
 # Knowledge base data files (optional - you may want to keep these)
 # data/
-# *.pkl
-
-# Automation scripts (optional - comment out if you want to commit them)
-auto_sync.py
-sync.sh 
+# *.pkl 
