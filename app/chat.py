@@ -28,9 +28,16 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response: str
 
+def auto_tag_response(text: str) -> str:
+    keywords = ["the rent is", "you can find it at", "is available at", "it is located", "yes", "no", "sure", "certainly"]
+    text_lower = text.lower()
+    if any(kw in text_lower for kw in keywords):
+        return "Resolved"
+    return "Inquiring"
+
 @chat_endpoint.post("/", response_model=ChatResponse)
 async def chat(request: ChatRequest, db: Session = Depends(get_db)):
-    # Step 1: Retrieve past conversation (last 5 messages per role)
+    # Step 1: Retrieve past conversation (last 10 messages)
     previous_messages = (
         db.query(Conversation)
         .filter(Conversation.user_id == request.user_id)
@@ -61,9 +68,10 @@ async def chat(request: ChatRequest, db: Session = Depends(get_db)):
     except Exception as e:
         response = f"Error: {str(e)}"
 
-    # Step 5: Log both user and assistant messages
-    db.add(Conversation(user_id=request.user_id, message=request.message, role="user"))
-    db.add(Conversation(user_id=request.user_id, message=response, role="assistant"))
+    # Step 5: Log user message and assistant response with tagging
+    db.add(Conversation(user_id=request.user_id, message=request.message, role="user", tag="Inquiring"))
+    assistant_tag = auto_tag_response(response)
+    db.add(Conversation(user_id=request.user_id, message=response, role="assistant", tag=assistant_tag))
     db.commit()
 
     return {"response": response}
