@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, TrendingUp, Sparkles, Bot, User } from 'lucide-react';
+import { MessageCircle, TrendingUp, Sparkles, Bot, User, Zap } from 'lucide-react';
 
 const Hero = () => {
   const scrollToSection = (sectionId) => {
