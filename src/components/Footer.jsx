@@ -28,8 +28,12 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <Building className="w-8 h-8 text-primary-600" />
-              <span className="text-xl font-bold">AI CRE Assistant</span>
+              <img 
+                src="/orphyAI.png" 
+                alt="Orphy AI Logo" 
+                className="w-8 h-8 rounded-lg object-contain"
+              />
+              <span className="text-xl font-bold">Orphy AI</span>
             </div>
           </div>
 
@@ -57,7 +61,7 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-700 gap-4">
           <p className="text-gray-400 text-sm">
-            © 2025 AI CRE Portfolio Assistant. Powered by advanced AI and machine learning.
+            © Belongs to Orphy AI
           </p>
           <div className="flex gap-4">
             <a href="#" className="text-gray-400 hover:text-white transition-colors">
