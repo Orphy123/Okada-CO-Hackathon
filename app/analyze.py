@@ -354,18 +354,19 @@ async def get_portfolio_stats():
     df_clean['Rent/SF/Year'] = df_clean['Rent/SF/Year'].apply(clean_currency_string)
     df_clean['GCI On 3 Years'] = df_clean['GCI On 3 Years'].apply(clean_currency_string)
     
+    # Convert numpy types to Python types for JSON serialization
     stats = {
-        "total_properties": len(df_clean),
-        "avg_size_sf": df_clean['Size (SF)'].mean(),
-        "avg_rent_per_sf": df_clean['Rent/SF/Year'].mean(),
-        "avg_gci_3_years": df_clean['GCI On 3 Years'].mean(),
+        "total_properties": int(len(df_clean)),
+        "avg_size_sf": float(df_clean['Size (SF)'].mean()) if not df_clean['Size (SF)'].isna().all() else 0.0,
+        "avg_rent_per_sf": float(df_clean['Rent/SF/Year'].mean()) if not df_clean['Rent/SF/Year'].isna().all() else 0.0,
+        "avg_gci_3_years": float(df_clean['GCI On 3 Years'].mean()) if not df_clean['GCI On 3 Years'].isna().all() else 0.0,
         "size_range": {
-            "min": df_clean['Size (SF)'].min(),
-            "max": df_clean['Size (SF)'].max()
+            "min": float(df_clean['Size (SF)'].min()) if not df_clean['Size (SF)'].isna().all() else 0.0,
+            "max": float(df_clean['Size (SF)'].max()) if not df_clean['Size (SF)'].isna().all() else 0.0
         },
         "rent_range": {
-            "min": df_clean['Rent/SF/Year'].min(),
-            "max": df_clean['Rent/SF/Year'].max()
+            "min": float(df_clean['Rent/SF/Year'].min()) if not df_clean['Rent/SF/Year'].isna().all() else 0.0,
+            "max": float(df_clean['Rent/SF/Year'].max()) if not df_clean['Rent/SF/Year'].isna().all() else 0.0
         }
     }
     
