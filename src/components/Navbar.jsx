@@ -53,11 +53,11 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { id: 'home', label: 'Home', icon: '🏠' },
-    { id: 'chat', label: 'AI Chat', icon: '💬' },
-    { id: 'portfolio', label: 'Portfolio', icon: '📊' },
-    { id: 'documents', label: 'Documents', icon: '📄' },
-    { id: 'insights', label: 'Insights', icon: '🔍' },
+    { id: 'home', label: 'Home', icon: '⚡' },
+    { id: 'chat', label: 'AI Chat', icon: '🤖' },
+    { id: 'portfolio', label: 'Portfolio', icon: '🎯' },
+    { id: 'documents', label: 'Documents', icon: '📁' },
+    { id: 'insights', label: 'Insights', icon: '🧠' },
   ];
 
   return (
@@ -73,13 +73,13 @@ const Navbar = () => {
             <div className="flex items-center gap-3 group cursor-pointer" onClick={() => scrollToSection('home')}>
               <div className="relative">
                 <div className="w-10 h-10 bg-gradient-to-br from-primary-600 via-secondary-600 to-accent-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-lg group-hover:shadow-xl">
-                  <Building className="w-5 h-5 text-white" />
+                  <Zap className="w-5 h-5 text-white" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse-slow opacity-80" />
               </div>
               <div className="hidden sm:block">
                 <span className="text-xl font-bold bg-gradient-to-r from-gray-900 via-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                  AI CRE Assistant
+                  ORPHY AI
                 </span>
                 <div className="flex items-center gap-1 text-xs text-gray-500">
                   <Sparkles className="w-3 h-3" />
@@ -174,10 +174,10 @@ const Navbar = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-xl flex items-center justify-center">
-                  <Building className="w-5 h-5 text-white" />
+                  <Zap className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="font-bold text-gray-900">AI CRE Assistant</div>
+                  <div className="font-bold text-gray-900">ORPHY AI</div>
                   <div className="text-xs text-gray-500 flex items-center gap-1">
                     <Sparkles className="w-3 h-3" />
                     Powered by AI
@@ -235,7 +235,7 @@ const Navbar = () => {
                 </div>
                 <div>
                   <div className="font-medium text-gray-900">{user.name}</div>
-                  <div className="text-sm text-gray-500">{user.company || 'Individual'}</div>
+                  <div className="text-sm text-gray-500">{user.company || 'ORPHY User'}</div>
                 </div>
               </div>
               <button
