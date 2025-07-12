@@ -82,7 +82,7 @@ const Navbar = () => {
                   ORPHY AI
                 </span>
                 <div className="flex items-center gap-1 text-xs text-gray-500">
-                  <Sparkles className="w-3 h-3" />
+                  <Zap className="w-3 h-3" />
                   <span>Powered by AI</span>
                 </div>
               </div>
