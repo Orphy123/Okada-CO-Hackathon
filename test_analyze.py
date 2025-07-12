@@ -204,10 +204,141 @@ def test_api_documentation():
         print(f"❌ Error: {e}")
         return False
 
+def test_chart_generation():
+    """Test chart generation functionality"""
+    print("\n📈 Testing Chart Generation")
+    print("=" * 60)
+    
+    try:
+        response = requests.post(
+            f"{BASE_URL}/analyze/analyze_portfolio",
+            json={
+                "user_id": "test_user_charts",
+                "query": "Show me properties above 10,000 SF",
+                "return_chart": True
+            },
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"✅ Chart generation successful!")
+            print(f"   Chart URL: {data.get('chart_url', 'No URL')}")
+            
+            # Test downloading the chart if URL is provided
+            if data.get('chart_url'):
+                chart_response = requests.get(f"{BASE_URL}{data['chart_url']}")
+                if chart_response.status_code == 200:
+                    print(f"   ✅ Chart download successful (Size: {len(chart_response.content)} bytes)")
+                    return True
+                else:
+                    print(f"   ❌ Chart download failed: {chart_response.status_code}")
+                    return False
+            else:
+                print(f"   ❌ No chart URL provided")
+                return False
+        else:
+            print(f"❌ Chart generation failed: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Chart generation error: {e}")
+        return False
+
+def test_csv_export():
+    """Test CSV export functionality"""
+    print("\n📋 Testing CSV Export")
+    print("=" * 60)
+    
+    try:
+        response = requests.post(
+            f"{BASE_URL}/analyze/analyze_portfolio",
+            json={
+                "user_id": "test_user_csv",
+                "query": "Show me properties above 5,000 SF",
+                "download_csv": True
+            },
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"✅ CSV export successful!")
+            print(f"   CSV URL: {data.get('csv_url', 'No URL')}")
+            
+            # Test downloading the CSV if URL is provided
+            if data.get('csv_url'):
+                csv_response = requests.get(f"{BASE_URL}{data['csv_url']}")
+                if csv_response.status_code == 200:
+                    print(f"   ✅ CSV download successful (Size: {len(csv_response.content)} bytes)")
+                    return True
+                else:
+                    print(f"   ❌ CSV download failed: {csv_response.status_code}")
+                    return False
+            else:
+                print(f"   ❌ No CSV URL provided")
+                return False
+        else:
+            print(f"❌ CSV export failed: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ CSV export error: {e}")
+        return False
+
+def test_combined_chart_and_csv():
+    """Test both chart and CSV generation together"""
+    print("\n🔄 Testing Combined Chart & CSV Generation")
+    print("=" * 60)
+    
+    try:
+        response = requests.post(
+            f"{BASE_URL}/analyze/analyze_portfolio",
+            json={
+                "user_id": "test_user_combined",
+                "query": "Show me the best properties with GCI over $200,000",
+                "return_chart": True,
+                "download_csv": True
+            },
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"✅ Combined generation successful!")
+            print(f"   Chart URL: {data.get('chart_url', 'No chart URL')}")
+            print(f"   CSV URL: {data.get('csv_url', 'No CSV URL')}")
+            print(f"   Total matches: {data.get('total_matches', 0)}")
+            
+            # Test both downloads
+            success_count = 0
+            if data.get('chart_url'):
+                chart_response = requests.get(f"{BASE_URL}{data['chart_url']}")
+                if chart_response.status_code == 200:
+                    success_count += 1
+                    print(f"   ✅ Chart download successful")
+                    
+            if data.get('csv_url'):
+                csv_response = requests.get(f"{BASE_URL}{data['csv_url']}")
+                if csv_response.status_code == 200:
+                    success_count += 1
+                    print(f"   ✅ CSV download successful")
+                    
+            print(f"   📊 {success_count}/2 downloads successful")
+            return success_count == 2
+            
+        else:
+            print(f"❌ Combined generation failed: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Combined generation error: {e}")
+        return False
+
 def main():
     """Run all tests"""
     
-    print("🚀 Starting Portfolio Analyzer Tests")
+    print("🚀 Starting Portfolio Analyzer Tests (Enhanced)")
     print("Make sure the server is running on http://localhost:8000")
     print("=" * 60)
     
@@ -229,6 +360,11 @@ def main():
     # Test API documentation
     results.append(test_api_documentation())
     
+    # Test new visualization features
+    results.append(test_chart_generation())
+    results.append(test_csv_export())
+    results.append(test_combined_chart_and_csv())
+    
     # Summary
     print("\n" + "=" * 60)
     print("📊 FINAL TEST RESULTS")
@@ -239,7 +375,10 @@ def main():
         "Portfolio Statistics",
         "Portfolio Analyzer",
         "Specific Scenarios",
-        "API Documentation"
+        "API Documentation",
+        "Chart Generation",
+        "CSV Export",
+        "Combined Chart & CSV"
     ]
     
     for i, (test_name, passed) in enumerate(zip(test_names, results)):

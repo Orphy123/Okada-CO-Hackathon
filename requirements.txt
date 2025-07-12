@@ -12,3 +12,4 @@ chardet
 pandas
 sqlalchemy
 requests
+matplotlib

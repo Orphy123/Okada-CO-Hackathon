@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from openai import OpenAI
 import pandas as pd
@@ -8,6 +9,10 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 from typing import List, Dict, Any
 from app.crm import SessionLocal, Conversation
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend
+import uuid
 
 load_dotenv()
 
@@ -38,12 +43,16 @@ def get_db():
 class AnalyzeRequest(BaseModel):
     user_id: str
     query: str
+    return_chart: bool = False
+    download_csv: bool = False
 
 class AnalyzeResponse(BaseModel):
     summary: str
     matches: List[Dict[str, Any]]
     total_matches: int
     query_interpretation: str
+    chart_url: str = ""
+    csv_url: str = ""
 
 def call_openai(prompt: str) -> str:
     """Call OpenAI API with error handling"""
@@ -189,6 +198,64 @@ Please provide a concise, professional summary of these findings for an investor
     except Exception as e:
         return f"Found {len(matches)} properties matching your criteria. Analysis details: {str(e)}"
 
+def generate_chart(filtered_df: pd.DataFrame, user_id: str) -> str:
+    """Generate a chart from filtered data and return the URL"""
+    if filtered_df.empty:
+        return ""
+    
+    try:
+        # Create a visualization
+        plt.figure(figsize=(12, 8))
+        
+        # Get top 10 properties by GCI
+        top_properties = filtered_df.nlargest(10, 'GCI On 3 Years')
+        
+        # Create labels for properties
+        labels = []
+        for _, row in top_properties.iterrows():
+            address = str(row.get('Property Address', 'Unknown'))[:30]
+            suite = str(row.get('Suite', ''))
+            if suite and suite != 'nan':
+                labels.append(f"{address} - {suite}")
+            else:
+                labels.append(address)
+        
+        # Create horizontal bar chart
+        plt.barh(range(len(labels)), top_properties['GCI On 3 Years'])
+        plt.yticks(range(len(labels)), labels)
+        plt.xlabel('GCI On 3 Years ($)')
+        plt.title('Top 10 Properties by GCI (3 Years)')
+        plt.tight_layout()
+        
+        # Save the chart
+        chart_filename = f"chart_{user_id}_{uuid.uuid4().hex}.png"
+        chart_path = f"data/{chart_filename}"
+        plt.savefig(chart_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        return f"/analyze/download_chart/{chart_filename}"
+    except Exception as e:
+        print(f"Error generating chart: {e}")
+        return ""
+
+def generate_csv(filtered_df: pd.DataFrame, user_id: str) -> str:
+    """Generate a CSV file from filtered data and return the URL"""
+    if filtered_df.empty:
+        return ""
+    
+    try:
+        # Create CSV filename
+        csv_filename = f"filtered_properties_{user_id}_{uuid.uuid4().hex}.csv"
+        csv_path = f"data/{csv_filename}"
+        
+        # Save the filtered data to CSV
+        filtered_df.to_csv(csv_path, index=False)
+        
+        return f"/analyze/download_csv/{csv_filename}"
+    except Exception as e:
+        print(f"Error generating CSV: {e}")
+        return ""
+
 @analyze_router.post("/analyze_portfolio", response_model=AnalyzeResponse)
 async def analyze_portfolio(request: AnalyzeRequest, db: Session = Depends(get_db)):
     """Analyze portfolio based on natural language query"""
@@ -256,11 +323,23 @@ async def analyze_portfolio(request: AnalyzeRequest, db: Session = Depends(get_d
     except Exception as e:
         print(f"Error logging conversation: {e}")
     
+    # Step 7: Generate chart if requested
+    chart_url = ""
+    if request.return_chart and not filtered_df.empty:
+        chart_url = generate_chart(filtered_df, request.user_id)
+    
+    # Step 8: Generate CSV if requested
+    csv_url = ""
+    if request.download_csv and not filtered_df.empty:
+        csv_url = generate_csv(filtered_df, request.user_id)
+    
     return AnalyzeResponse(
         summary=summary,
         matches=matches,
         total_matches=len(matches),
-        query_interpretation=query_interpretation
+        query_interpretation=query_interpretation,
+        chart_url=chart_url,
+        csv_url=csv_url
     )
 
 @analyze_router.get("/portfolio_stats")
@@ -290,4 +369,28 @@ async def get_portfolio_stats():
         }
     }
     
-    return stats 
+    return stats
+
+@analyze_router.get("/download_chart/{filename}")
+async def download_chart(filename: str):
+    """Download a generated chart file"""
+    chart_path = f"data/{filename}"
+    if os.path.exists(chart_path):
+        return FileResponse(
+            path=chart_path,
+            filename=filename,
+            media_type="image/png"
+        )
+    raise HTTPException(status_code=404, detail="Chart not found")
+
+@analyze_router.get("/download_csv/{filename}")
+async def download_csv(filename: str):
+    """Download a generated CSV file"""
+    csv_path = f"data/{filename}"
+    if os.path.exists(csv_path):
+        return FileResponse(
+            path=csv_path,
+            filename=filename,
+            media_type="text/csv"
+        )
+    raise HTTPException(status_code=404, detail="CSV not found") 
