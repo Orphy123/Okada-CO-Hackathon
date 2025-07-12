@@ -10,4 +10,4 @@ This file is created to test the GitHub automation setup.
   3. Shell script with multiple options
   4. Git aliases for quick operations
 
-The automation should automatically push this change to GitHub when committed. 
+The automation should automatically push this change to GitHub when committed. Testing git aliases functionality
