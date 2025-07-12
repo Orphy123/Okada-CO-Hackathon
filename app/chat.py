@@ -30,27 +30,38 @@ class ChatResponse(BaseModel):
 
 @chat_endpoint.post("/", response_model=ChatResponse)
 async def chat(request: ChatRequest, db: Session = Depends(get_db)):
-    # Step 1: Retrieve context from RAG
-    context_docs = query_knowledge_base(request.message)
-    context = "\n".join(context_docs)
-
-    # Step 2: Construct prompt with RAG context
-    messages = [
-        {"role": "system", "content": "Use the following context if helpful:\n" + context},
-        {"role": "user", "content": request.message}
+    # Step 1: Retrieve past conversation (last 5 messages per role)
+    previous_messages = (
+        db.query(Conversation)
+        .filter(Conversation.user_id == request.user_id)
+        .order_by(Conversation.timestamp.desc())
+        .limit(10)
+        .all()
+    )
+    history = [
+        {"role": msg.role, "content": msg.message}
+        for msg in reversed(previous_messages)
     ]
 
-    # Step 3: Get LLM response
+    # Step 2: Add current user message
+    history.append({"role": "user", "content": request.message})
+
+    # Step 3: Add relevant context from RAG
+    context_docs = query_knowledge_base(request.message)
+    context = "\n".join(context_docs)
+    history.insert(0, {"role": "system", "content": "Use the following context if helpful:\n" + context})
+
+    # Step 4: Get LLM response
     try:
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=messages
+            messages=history
         )
         response = completion.choices[0].message["content"].strip()
     except Exception as e:
         response = f"Error: {str(e)}"
 
-    # Step 4: Log user message and assistant response to CRM
+    # Step 5: Log both user and assistant messages
     db.add(Conversation(user_id=request.user_id, message=request.message, role="user"))
     db.add(Conversation(user_id=request.user_id, message=response, role="assistant"))
     db.commit()
