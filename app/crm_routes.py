@@ -27,9 +27,14 @@ class UserUpdate(BaseModel):
     company: Optional[str] = None
     preferences: Optional[str] = None
 
+class TagUpdate(BaseModel):
+    message_id: str
+    tag: str
+
 class ConversationResponse(BaseModel):
     message: str
     role: str
+    tag: Optional[str]
     timestamp: str
 
 # Create User
@@ -64,11 +69,26 @@ def get_conversations(user_id: str, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found.")
     return [
-        {"message": conv.message, "role": conv.role, "timestamp": conv.timestamp.isoformat()}
+        {
+            "message": conv.message,
+            "role": conv.role,
+            "tag": conv.tag,
+            "timestamp": conv.timestamp.isoformat()
+        }
         for conv in user.conversations
     ]
 
-# Reset (optional): clears all users and conversations
+# Tag a conversation message
+@crm_router.put("/crm/tag_message")
+def tag_message(tag_data: TagUpdate, db: Session = Depends(get_db)):
+    message = db.query(Conversation).filter(Conversation.id == tag_data.message_id).first()
+    if not message:
+        raise HTTPException(status_code=404, detail="Message not found.")
+    message.tag = tag_data.tag
+    db.commit()
+    return {"message": f"Tag updated to '{tag_data.tag}' for message {tag_data.message_id}."}
+
+# Reset all data
 @crm_router.post("/crm/reset")
 def reset_database(db: Session = Depends(get_db)):
     db.query(Conversation).delete()
