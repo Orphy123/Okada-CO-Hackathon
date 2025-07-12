@@ -11,3 +11,4 @@ python-docx
 chardet
 pandas
 sqlalchemy
+requests

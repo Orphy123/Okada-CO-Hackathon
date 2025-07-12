@@ -12,10 +12,19 @@ A modern, fast conversational AI chatbot built with FastAPI that implements Retr
 - **Smart Document Processing**: Automatic text extraction and chunking
 - **Semantic Search**: TF-IDF vectorization for efficient document retrieval
 
+### 🏢 **Natural Language Portfolio Analyzer** (NEW!)
+- **Natural Language Queries**: "Show me all properties above 15,000 SF with rent below $90/SF and GCI above $250K over 3 years"
+- **Intelligent Data Filtering**: Automatically parses queries and applies structured filters
+- **AI-Generated Summaries**: Comprehensive insights and analysis of filtered results
+- **Real Estate Data Integration**: Works with commercial property CSV data
+- **Portfolio Statistics**: Overview metrics and performance indicators
+
 ### 📋 API Endpoints
 - `POST /chat/` - Chat with the AI (with optional RAG)
 - `POST /chat/upload_docs` - Upload documents to knowledge base
 - `POST /chat/add-documents` - Add text documents via JSON
+- `POST /analyze/analyze_portfolio` - **NEW!** Natural language portfolio analysis
+- `GET /analyze/portfolio_stats` - **NEW!** Portfolio statistics and metrics
 - `GET /docs` - Interactive API documentation
 
 ### 🔧 Technical Stack
@@ -98,6 +107,21 @@ curl -X POST "http://localhost:8000/chat/add-documents" \
       "RAG combines information retrieval with language generation."
     ]
   }'
+```
+
+### Portfolio Analysis (NEW!)
+
+```bash
+# Natural language portfolio query
+curl -X POST "http://localhost:8000/analyze/analyze_portfolio" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "investor_123",
+    "query": "Show me all properties above 15,000 SF with rent below $90/SF and GCI above $250K over 3 years"
+  }'
+
+# Get portfolio statistics
+curl -X GET "http://localhost:8000/analyze/portfolio_stats"
 ```
 
 ## Project Structure
