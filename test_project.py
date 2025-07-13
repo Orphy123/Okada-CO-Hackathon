@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Comprehensive testing script for the RAG-enabled chatbot project.
-Tests all Phase 3 and Phase 4 functionality.
+
 """
 
 import requests
@@ -45,7 +45,7 @@ class ProjectTester:
             return False
             
     def test_create_user(self):
-        """Test user creation (Phase 3)"""
+        
         try:
             payload = {
                 "name": "Test User",
@@ -66,7 +66,7 @@ class ProjectTester:
             return False
             
     def test_chat_functionality(self):
-        """Test chat endpoint with message logging (Phase 3)"""
+       
         try:
             payload = {
                 "user_id": TEST_USER_ID,
@@ -87,7 +87,7 @@ class ProjectTester:
             return False
             
     def test_conversation_history(self):
-        """Test conversation history retrieval (Phase 3)"""
+
         try:
             # Send another message to create history
             payload = {
@@ -141,7 +141,7 @@ Office C,2000,4000,Yes"""
         return test_dir
         
     def test_file_upload_txt(self):
-        """Test TXT file upload (Phase 4)"""
+  
         try:
             test_dir = self.create_test_files()
             txt_file = test_dir / "test.txt"
@@ -164,7 +164,7 @@ Office C,2000,4000,Yes"""
             return False
             
     def test_file_upload_csv(self):
-        """Test CSV file upload (Phase 4)"""
+       
         try:
             test_dir = Path("test_files")
             csv_file = test_dir / "test.csv"
@@ -187,7 +187,7 @@ Office C,2000,4000,Yes"""
             return False
             
     def test_file_upload_json(self):
-        """Test JSON file upload (Phase 4)"""
+  
         try:
             test_dir = Path("test_files")
             json_file = test_dir / "test.json"
@@ -210,7 +210,7 @@ Office C,2000,4000,Yes"""
             return False
             
     def test_add_documents_endpoint(self):
-        """Test add-documents endpoint (Phase 4)"""
+     
         try:
             payload = {
                 "documents": [
@@ -260,7 +260,7 @@ Office C,2000,4000,Yes"""
             return False
             
     def test_multiple_file_upload(self):
-        """Test multiple file upload (Phase 4)"""
+     
         try:
             test_dir = Path("test_files")
             txt_file = test_dir / "test.txt"
@@ -332,8 +332,8 @@ Office C,2000,4000,Yes"""
         if passed == total:
             print("\n🎉 ALL TESTS PASSED! Your project is working perfectly!")
             print("\n✨ Your RAG-enabled chatbot supports:")
-            print("   ✅ Phase 3: Complete CRM integration with conversation logging")
-            print("   ✅ Phase 4: Complete document upload (PDF/TXT/CSV/JSON)")
+            print("   ✅ Complete CRM integration with conversation logging")
+            print("   ✅ Complete document upload (PDF/TXT/CSV/JSON)")
             print("   ✅ RAG system with TF-IDF vectorization")
             print("   ✅ Multi-file upload capability")
             print("   ✅ Context-aware responses using uploaded documents")

@@ -258,15 +258,3 @@ The Portfolio Analyzer integrates seamlessly with your existing RAG-enabled chat
 # Run server with debug logging
 uvicorn app.main:app --reload --port 8000 --log-level debug
 ```
-
-## Support
-
-For issues and questions:
-1. Check the test results: `python test_analyze.py`
-2. Review server logs for error details
-3. Verify your OpenAI API key is working
-4. Check the interactive API docs at `http://localhost:8000/docs`
-
----
-
-Built with ❤️ using FastAPI, OpenAI, and modern Python practices. 

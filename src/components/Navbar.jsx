@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Building, Menu, X, Sparkles, Zap } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import orphyAILogo from '../assets/orphyAI.png';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -73,7 +74,7 @@ const Navbar = () => {
             <div className="flex items-center gap-3 group cursor-pointer" onClick={() => scrollToSection('home')}>
               <div className="relative">
                 <img 
-                  src="/orphyAI.png" 
+                  src={orphyAILogo} 
                   alt="ORPHY AI Logo" 
                   className="w-10 h-10 rounded-xl transform group-hover:scale-110 transition-all duration-300 shadow-lg group-hover:shadow-xl object-contain"
                 />
@@ -172,7 +173,7 @@ const Navbar = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img 
-                  src="/orphyAI.png" 
+                  src={orphyAILogo} 
                   alt="ORPHY AI Logo" 
                   className="w-10 h-10 rounded-xl object-contain"
                 />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Building } from 'lucide-react';
+import orphyAILogo from '../assets/orphyAI.png';
 
 const Footer = () => {
   const footerSections = [
@@ -29,7 +30,7 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
               <img 
-                src="/orphyAI.png" 
+                src={orphyAILogo} 
                 alt="Orphy AI Logo" 
                 className="w-8 h-8 rounded-lg object-contain"
               />
