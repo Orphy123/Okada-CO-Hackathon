@@ -40,11 +40,7 @@ A modern, intelligent conversational AI chatbot built with FastAPI that combines
 - **Uvicorn**: ASGI server for production
 
 ### Frontend
-- **Vanilla JavaScript**: Modern ES6+ features
-- **CSS3**: Responsive design with Flexbox/Grid
-- **HTML5**: Semantic markup
-- **Font Awesome**: Icon library
-- **Google Fonts**: Typography
+
 
 ### AI & ML
 - **OpenAI GPT-3.5**: Language model for conversations
