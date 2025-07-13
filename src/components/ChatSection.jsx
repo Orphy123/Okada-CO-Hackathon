@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Trash2, Download, Settings, Bot, User, Building, DollarSign, TrendingUp, MapPin } from 'lucide-react';
+import { Send, Trash2, Download, Bot, User, Building, DollarSign, TrendingUp, MapPin } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
 import { chatAPI } from '../services/api';
@@ -25,9 +25,15 @@ What would you like to explore today?`,
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
@@ -171,17 +177,11 @@ What would you like to explore today?`,
               >
                 <Download className="w-4 h-4" />
               </button>
-              <button
-                className="btn btn-sm btn-outline"
-                title="Settings"
-              >
-                <Settings className="w-4 h-4" />
-              </button>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="h-96 overflow-y-auto p-6 bg-white">
+          <div ref={messagesContainerRef} className="h-96 overflow-y-auto p-6 bg-white">
             {messages.map((message) => (
               <div
                 key={message.id}
