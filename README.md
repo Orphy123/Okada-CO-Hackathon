@@ -4,6 +4,8 @@ A full-stack, multi-agentic platform designed for the Commercial Real Estate (CR
 
 ---
 
+
+
 ## 🚀 Overview
 
 This system enables real-time, natural language interaction with property data, documents, and CRM intelligence. By integrating OpenAI's GPT-3.5 with a custom RAG pipeline and lightweight CRM, users can perform portfolio analysis, upload and search documents, and revisit prior sessions — all in one place.

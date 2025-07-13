@@ -2,24 +2,27 @@ import os
 import pickle
 import json
 import re
-from typing import List
+from typing import List, Dict, Any
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+from datetime import datetime
 
 # Knowledge base path
 DOCS_FILE = "data/documents.pkl"
 VECTORIZER_FILE = "data/vectorizer.pkl"
 TFIDF_MATRIX_FILE = "data/tfidf_matrix.pkl"
+METADATA_FILE = "data/document_metadata.pkl"
 
 # Global in-memory storage
 document_chunks = []
 vectorizer = None
 tfidf_matrix = None
+document_metadata = []  # New: Store metadata for each document
 
 def load_knowledge_base():
     """Load the knowledge base from disk"""
-    global document_chunks, vectorizer, tfidf_matrix
+    global document_chunks, vectorizer, tfidf_matrix, document_metadata
     
     if os.path.exists(DOCS_FILE) and os.path.exists(VECTORIZER_FILE) and os.path.exists(TFIDF_MATRIX_FILE):
         # Load documents
@@ -33,11 +36,19 @@ def load_knowledge_base():
         # Load TF-IDF matrix
         with open(TFIDF_MATRIX_FILE, "rb") as f:
             tfidf_matrix = pickle.load(f)
+        
+        # Load metadata if exists
+        if os.path.exists(METADATA_FILE):
+            with open(METADATA_FILE, "rb") as f:
+                document_metadata = pickle.load(f)
+        else:
+            document_metadata = []
     else:
         # Initialize empty knowledge base
         document_chunks = []
         vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
         tfidf_matrix = None
+        document_metadata = []
 
 def save_knowledge_base():
     """Save the knowledge base to disk"""
@@ -56,18 +67,98 @@ def save_knowledge_base():
     if tfidf_matrix is not None:
         with open(TFIDF_MATRIX_FILE, "wb") as f:
             pickle.dump(tfidf_matrix, f)
+    
+    # Save metadata
+    with open(METADATA_FILE, "wb") as f:
+        pickle.dump(document_metadata, f)
 
-def add_documents(texts: List[str]):
-    """Add documents to the knowledge base"""
-    global document_chunks, vectorizer, tfidf_matrix
+def add_documents(texts: List[str], filename: str = None, file_size: int = None):
+    """Add documents to the knowledge base with metadata tracking"""
+    global document_chunks, vectorizer, tfidf_matrix, document_metadata
+    
+    # Track the starting index for this document's chunks
+    start_index = len(document_chunks)
     
     # Add new documents
     document_chunks.extend(texts)
+    
+    # Create metadata entry for this document
+    if filename:
+        metadata_entry = {
+            "id": len(document_metadata) + 1,
+            "filename": filename,
+            "upload_date": datetime.utcnow().isoformat(),
+            "chunk_count": len(texts),
+            "chunk_start_index": start_index,
+            "chunk_end_index": start_index + len(texts) - 1,
+            "file_size": file_size or 0,
+            "total_text_length": sum(len(text) for text in texts)
+        }
+        document_metadata.append(metadata_entry)
     
     # Refit vectorizer and compute TF-IDF matrix
     if len(document_chunks) > 0:
         tfidf_matrix = vectorizer.fit_transform(document_chunks)
         save_knowledge_base()
+
+def get_documents_list():
+    """Get list of all uploaded documents with metadata"""
+    global document_metadata
+    return document_metadata
+
+def delete_document(document_id: int):
+    """Delete a document and its chunks from the knowledge base"""
+    global document_chunks, vectorizer, tfidf_matrix, document_metadata
+    
+    # Find the document metadata
+    doc_to_delete = None
+    doc_index = None
+    for i, doc in enumerate(document_metadata):
+        if doc["id"] == document_id:
+            doc_to_delete = doc
+            doc_index = i
+            break
+    
+    if not doc_to_delete:
+        raise ValueError(f"Document with ID {document_id} not found")
+    
+    # Remove chunks from document_chunks
+    start_idx = doc_to_delete["chunk_start_index"]
+    end_idx = doc_to_delete["chunk_end_index"]
+    chunks_to_remove = end_idx - start_idx + 1
+    
+    # Remove the chunks
+    del document_chunks[start_idx:end_idx + 1]
+    
+    # Remove metadata entry
+    del document_metadata[doc_index]
+    
+    # Update chunk indices for remaining documents
+    for doc in document_metadata:
+        if doc["chunk_start_index"] > end_idx:
+            doc["chunk_start_index"] -= chunks_to_remove
+            doc["chunk_end_index"] -= chunks_to_remove
+    
+    # Refit vectorizer and compute TF-IDF matrix if documents remain
+    if len(document_chunks) > 0:
+        tfidf_matrix = vectorizer.fit_transform(document_chunks)
+    else:
+        tfidf_matrix = None
+    
+    save_knowledge_base()
+    return {"message": f"Document '{doc_to_delete['filename']}' deleted successfully"}
+
+def clear_knowledge_base():
+    """Clear all documents from the knowledge base"""
+    global document_chunks, vectorizer, tfidf_matrix, document_metadata
+    
+    document_chunks = []
+    document_metadata = []
+    tfidf_matrix = None
+    vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
+    
+    save_knowledge_base()
+    return {"message": "Knowledge base cleared successfully"}
 
 def extract_numerical_criteria(query: str):
     """Extract numerical criteria from query"""

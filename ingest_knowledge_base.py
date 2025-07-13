@@ -61,10 +61,18 @@ def main():
         print(f"\nSample {i}:")
         print(chunk)
     
-    # Ingest the chunks into the RAG system
+    # Ingest the chunks into the RAG system with metadata
     print(f"\nIngesting {len(knowledge_chunks)} chunks into RAG system...")
     try:
-        add_documents(knowledge_chunks)
+        # Calculate approximate file size based on text content
+        total_text = '\n'.join(knowledge_chunks)
+        file_size = len(total_text.encode('utf-8'))
+        
+        add_documents(
+            knowledge_chunks, 
+            filename="HackathonInternalKnowledgeBase.csv",
+            file_size=file_size
+        )
         print("Successfully ingested all chunks into RAG system!")
     except Exception as e:
         print(f"Error ingesting chunks: {e}")

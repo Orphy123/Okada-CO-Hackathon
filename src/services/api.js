@@ -38,6 +38,22 @@ export const chatAPI = {
     const response = await api.post('/chat/add-documents', { documents });
     return response.data;
   },
+
+  // Document Management
+  getDocuments: async () => {
+    const response = await api.get('/chat/documents');
+    return response.data;
+  },
+
+  deleteDocument: async (documentId) => {
+    const response = await api.delete(`/chat/documents/${documentId}`);
+    return response.data;
+  },
+
+  clearAllDocuments: async () => {
+    const response = await api.delete('/chat/documents');
+    return response.data;
+  },
 };
 
 // Chat History API
