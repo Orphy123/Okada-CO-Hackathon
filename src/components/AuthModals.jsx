@@ -69,9 +69,17 @@ const AuthModals = () => {
   // Add global click handlers to navbar buttons
   React.useEffect(() => {
     const handleNavbarClicks = (e) => {
-      if (e.target.textContent === 'Login') {
+      // Use closest() to find the actual button element, not just the clicked target
+      const button = e.target.closest('button');
+      if (!button) return;
+      
+      // Check data attribute first (more reliable), then fall back to text content
+      const authAction = button.getAttribute('data-auth-action');
+      const buttonText = button.textContent?.trim();
+      
+      if (authAction === 'login' || buttonText === 'Login') {
         setShowLogin(true);
-      } else if (e.target.textContent === 'Get Started') {
+      } else if (authAction === 'signup' || buttonText === 'Get Started') {
         setShowSignup(true);
       }
     };

@@ -132,13 +132,13 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="hidden md:flex items-center gap-3">
-                  <button className="btn btn-outline group relative overflow-hidden">
+                  <button className="btn btn-outline group relative overflow-hidden" data-auth-action="login">
                     <span className="relative z-10">Login</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
                   </button>
-                  <button className="btn btn-primary group relative overflow-hidden">
-                    <Zap className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-                    <span>Get Started</span>
+                  <button className="btn btn-primary group relative overflow-hidden" data-auth-action="signup">
+                    <Zap className="w-4 h-4 group-hover:rotate-12 transition-transform relative z-10" />
+                    <span className="relative z-10">Get Started</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-secondary-600 to-accent-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-right duration-300" />
                   </button>
                 </div>
@@ -211,12 +211,12 @@ const Navbar = () => {
 
           {!user && (
             <div className="p-6 border-t border-gray-200 space-y-3">
-              <button className="btn btn-outline btn-full">
+              <button className="btn btn-outline btn-full" data-auth-action="login">
                 Login
               </button>
-              <button className="btn btn-primary btn-full">
-                <Zap className="w-4 h-4" />
-                Get Started
+              <button className="btn btn-primary btn-full" data-auth-action="signup">
+                <Zap className="w-4 h-4 relative z-10" />
+                <span className="relative z-10">Get Started</span>
               </button>
             </div>
           )}
