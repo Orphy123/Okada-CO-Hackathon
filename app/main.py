@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.chat import chat_endpoint
+from app.chat_history import history_router
 from app.crm_routes import crm_router
 from app.upload import upload_router
 from app.analyze import analyze_router
@@ -21,6 +22,7 @@ app.add_middleware(
 )
 
 app.include_router(chat_endpoint, prefix="/chat", tags=["Chat"])
+app.include_router(history_router, prefix="/history", tags=["Chat History"])
 app.include_router(crm_router, tags=["CRM"])
 app.include_router(upload_router, prefix="/chat", tags=["Upload"])
 app.include_router(analyze_router, prefix="/analyze", tags=["Portfolio Analysis"])
@@ -32,6 +34,7 @@ async def root():
         "version": "1.0.0",
         "endpoints": {
             "chat": "/chat/",
+            "chat_history": "/history/sessions/",
             "portfolio_analysis": "/analyze/analyze_portfolio",
             "portfolio_stats": "/analyze/portfolio_stats",
             "upload_docs": "/chat/upload_docs",

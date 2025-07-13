@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Trash2, Download, Bot, User, Building, DollarSign, TrendingUp, MapPin } from 'lucide-react';
+import { Send, Trash2, Download, Bot, User, Building, DollarSign, TrendingUp, MapPin, History, ChevronRight } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
-import { chatAPI } from '../services/api';
+import { chatAPI, historyAPI } from '../services/api';
+import ChatHistoryPanel from './ChatHistoryPanel';
 
 const ChatSection = () => {
   const { user } = useAuth();
@@ -24,6 +25,9 @@ What would you like to explore today?`,
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [historyPanelOpen, setHistoryPanelOpen] = useState(false);
+  const [currentSessionId, setCurrentSessionId] = useState(null);
+  const [sessionTitle, setSessionTitle] = useState('New Chat');
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
@@ -80,7 +84,8 @@ What would you like to explore today?`,
     try {
       const response = await chatAPI.sendMessage(
         user?.id || 'anonymous',
-        message
+        message,
+        currentSessionId
       );
 
       const aiMessage = {
@@ -91,6 +96,15 @@ What would you like to explore today?`,
       };
 
       setMessages(prev => [...prev, aiMessage]);
+
+      // Update session ID if we got a new one
+      if (response.session_id && response.session_id !== currentSessionId) {
+        setCurrentSessionId(response.session_id);
+        // Update session title if this was the first message
+        if (!currentSessionId) {
+          setSessionTitle(message.length > 50 ? message.substring(0, 50) + '...' : message);
+        }
+      }
     } catch (error) {
       const errorMessage = {
         id: Date.now() + 1,
@@ -112,7 +126,7 @@ What would you like to explore today?`,
     }
   };
 
-  const clearChat = () => {
+  const startNewChat = () => {
     setMessages([{
       id: 1,
       role: 'ai',
@@ -126,6 +140,47 @@ What would you like to explore today?`,
 What would you like to explore today?`,
       timestamp: new Date()
     }]);
+    setCurrentSessionId(null);
+    setSessionTitle('New Chat');
+  };
+
+  const handleSessionSelect = (sessionData) => {
+    // Convert session conversations to the format expected by the chat component
+    const sessionMessages = [
+      {
+        id: 0,
+        role: 'ai',
+        content: `Hello! I'm your AI Commercial Real Estate Assistant. I can help you:
+
+• Analyze property portfolios
+• Find investment opportunities
+• Answer questions about market data
+• Process and search through documents
+
+What would you like to explore today?`,
+        timestamp: new Date()
+      },
+      ...sessionData.conversations.map((conv, index) => ({
+        id: index + 1,
+        role: conv.role === 'assistant' ? 'ai' : 'user',
+        content: conv.message,
+        timestamp: new Date(conv.timestamp)
+      }))
+    ];
+
+    setMessages(sessionMessages);
+    setCurrentSessionId(sessionData.id);
+    setSessionTitle(sessionData.title);
+    setHistoryPanelOpen(false);
+  };
+
+  const handleNewSession = (sessionId) => {
+    if (sessionId) {
+      setCurrentSessionId(sessionId);
+      setSessionTitle('New Chat');
+    }
+    startNewChat();
+    setHistoryPanelOpen(false);
   };
 
   const exportChat = () => {
@@ -145,129 +200,153 @@ What would you like to explore today?`,
   };
 
   return (
-    <section id="chat" className="py-20 bg-gray-50">
-      <div className="container">
-        <div className="section-header">
-          <h2>AI Chat Assistant</h2>
-          <p>Ask questions about properties, markets, and investments in natural language</p>
-        </div>
-
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-          {/* Header */}
-          <div className="flex items-center justify-between p-5 bg-gray-50 border-b border-gray-200">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow" />
-              <span className="font-medium text-gray-700">AI Assistant Online</span>
-              <div className="ml-4 text-sm text-gray-500">
-                {user ? `${user.name} (${user.company || 'Individual'})` : 'Guest User'}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={clearChat}
-                className="btn btn-sm btn-outline"
-                title="Clear Chat"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={exportChat}
-                className="btn btn-sm btn-outline"
-                title="Export Chat"
-              >
-                <Download className="w-4 h-4" />
-              </button>
-            </div>
+    <>
+      <ChatHistoryPanel
+        isOpen={historyPanelOpen}
+        onToggle={() => setHistoryPanelOpen(!historyPanelOpen)}
+        currentSessionId={currentSessionId}
+        onSessionSelect={handleSessionSelect}
+        onNewSession={handleNewSession}
+      />
+      
+      <section id="chat" className="py-20 bg-gray-50">
+        <div className="container">
+          <div className="section-header">
+            <h2>AI Chat Assistant</h2>
+            <p>Ask questions about properties, markets, and investments in natural language</p>
           </div>
 
-          {/* Messages */}
-          <div ref={messagesContainerRef} className="h-96 overflow-y-auto p-6 bg-white">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-3 mb-5 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
-              >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  message.role === 'user' 
-                    ? 'bg-gray-600' 
-                    : 'bg-primary-600'
-                }`}>
-                  {message.role === 'user' ? (
-                    <User className="w-4 h-4 text-white" />
-                  ) : (
-                    <Bot className="w-4 h-4 text-white" />
-                  )}
+          <div className={`max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 transition-all duration-300 ${
+            historyPanelOpen ? 'ml-80' : ''
+          }`}>
+            {/* Header */}
+            <div className="flex items-center justify-between p-5 bg-gray-50 border-b border-gray-200">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setHistoryPanelOpen(!historyPanelOpen)}
+                  className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                  title="Toggle Chat History"
+                >
+                  {historyPanelOpen ? <ChevronRight className="w-5 h-5" /> : <History className="w-5 h-5" />}
+                </button>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow" />
+                  <span className="font-medium text-gray-700">AI Assistant Online</span>
                 </div>
-                <div className="flex-1">
-                  <div className={`rounded-lg p-3 ${
-                    message.role === 'user'
-                      ? 'bg-primary-600 text-white ml-8'
-                      : 'bg-gray-100 text-gray-700 mr-8'
-                  }`}>
-                    <p className="whitespace-pre-line">{message.content}</p>
-                  </div>
-                  <span className="text-xs text-gray-400 mt-1 block">
-                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
+                <div className="hidden md:block text-sm text-gray-500">
+                  {sessionTitle}
                 </div>
               </div>
-            ))}
-            
-            {isTyping && (
-              <div className="flex gap-3 mb-5">
-                <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-4 h-4 text-white" />
+              <div className="flex items-center gap-2">
+                <div className="hidden md:block text-sm text-gray-500">
+                  {user ? `${user.name} (${user.company || 'Individual'})` : 'Guest User'}
                 </div>
-                <div className="flex-1">
-                  <div className="bg-gray-100 rounded-lg p-3 mr-8">
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot" style={{ animationDelay: '0.16s' }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot" style={{ animationDelay: '0.32s' }} />
+                <button
+                  onClick={startNewChat}
+                  className="btn btn-sm btn-outline"
+                  title="New Chat"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={exportChat}
+                  className="btn btn-sm btn-outline"
+                  title="Export Chat"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Messages */}
+            <div ref={messagesContainerRef} className="h-96 overflow-y-auto p-6 bg-white">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex gap-3 mb-5 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
+                >
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    message.role === 'user' 
+                      ? 'bg-gray-600' 
+                      : 'bg-primary-600'
+                  }`}>
+                    {message.role === 'user' ? (
+                      <User className="w-4 h-4 text-white" />
+                    ) : (
+                      <Bot className="w-4 h-4 text-white" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <div className={`rounded-lg p-3 ${
+                      message.role === 'user'
+                        ? 'bg-primary-600 text-white ml-8'
+                        : 'bg-gray-100 text-gray-700 mr-8'
+                    }`}>
+                      <p className="whitespace-pre-line">{message.content}</p>
+                    </div>
+                    <span className="text-xs text-gray-400 mt-1 block">
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              
+              {isTyping && (
+                <div className="flex gap-3 mb-5">
+                  <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Bot className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="bg-gray-100 rounded-lg p-3 mr-8">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot" />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot" style={{ animationDelay: '0.16s' }} />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot" style={{ animationDelay: '0.32s' }} />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input */}
-          <div className="p-6 border-t border-gray-200 bg-gray-50">
-            <div className="flex flex-wrap gap-2 mb-4">
-              {quickActions.map((action, index) => (
-                <button
-                  key={index}
-                  onClick={() => sendMessage(action.message)}
-                  className="flex items-center gap-2 px-3 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-xs hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-colors"
-                >
-                  <action.icon className="w-3 h-3" />
-                  {action.label}
-                </button>
-              ))}
+              )}
+              <div ref={messagesEndRef} />
             </div>
-            
-            <div className="flex gap-3">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask me anything about commercial real estate..."
-                className="flex-1 px-5 py-4 border border-gray-300 rounded-lg text-base outline-none transition-colors focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
-              />
-              <button
-                onClick={() => sendMessage()}
-                disabled={!inputValue.trim() || isTyping}
-                className="px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-12"
-              >
-                <Send className="w-5 h-5" />
-              </button>
+
+            {/* Input */}
+            <div className="p-6 border-t border-gray-200 bg-gray-50">
+              <div className="flex flex-wrap gap-2 mb-4">
+                {quickActions.map((action, index) => (
+                  <button
+                    key={index}
+                    onClick={() => sendMessage(action.message)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg text-xs hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-colors"
+                  >
+                    <action.icon className="w-3 h-3" />
+                    {action.label}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Ask me anything about commercial real estate..."
+                  className="flex-1 px-5 py-4 border border-gray-300 rounded-lg text-base outline-none transition-colors focus:border-primary-600 focus:ring-2 focus:ring-primary-100"
+                />
+                <button
+                  onClick={() => sendMessage()}
+                  disabled={!inputValue.trim() || isTyping}
+                  className="px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-12"
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

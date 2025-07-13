@@ -11,10 +11,11 @@ const api = axios.create({
 
 // Chat API
 export const chatAPI = {
-  sendMessage: async (userId, message) => {
+  sendMessage: async (userId, message, sessionId = null) => {
     const response = await api.post('/chat/', {
       user_id: userId,
       message,
+      session_id: sessionId,
     });
     return response.data;
   },
@@ -35,6 +36,44 @@ export const chatAPI = {
 
   addDocuments: async (documents) => {
     const response = await api.post('/chat/add-documents', { documents });
+    return response.data;
+  },
+};
+
+// Chat History API
+export const historyAPI = {
+  getUserSessions: async (userId) => {
+    const response = await api.get(`/history/sessions/${userId}`);
+    return response.data;
+  },
+
+  getSessionWithConversations: async (userId, sessionId) => {
+    const response = await api.get(`/history/sessions/${userId}/${sessionId}`);
+    return response.data;
+  },
+
+  createSession: async (userId, title = null) => {
+    const response = await api.post('/history/sessions/create', {
+      user_id: userId,
+      title,
+    });
+    return response.data;
+  },
+
+  updateSessionTitle: async (sessionId, title) => {
+    const response = await api.put(`/history/sessions/${sessionId}/title`, {
+      title,
+    });
+    return response.data;
+  },
+
+  deleteSession: async (sessionId) => {
+    const response = await api.delete(`/history/sessions/${sessionId}`);
+    return response.data;
+  },
+
+  getCurrentSession: async (userId) => {
+    const response = await api.get(`/history/sessions/${userId}/current`);
     return response.data;
   },
 };
