@@ -12,6 +12,54 @@ This system enables real-time, natural language interaction with property data, 
 
 ---
 
+
+### System Architecture Diagram
+
+```mermaid
+graph TB
+    subgraph "CRM Database Schema"
+        User["🧑 Users Table<br/>---------------<br/>• id (Primary Key)<br/>• name<br/>• email<br/>• company<br/>• preferences<br/>• created_at"]
+        
+        ChatSession["💬 Chat Sessions Table<br/>------------------<br/>• id (Primary Key)<br/>• user_id (Foreign Key)<br/>• title<br/>• created_at<br/>• updated_at"]
+        
+        Conversation["📝 Conversations Table<br/>-------------------<br/>• id (Primary Key)<br/>• user_id (Foreign Key)<br/>• session_id (Foreign Key)<br/>• message<br/>• role (user/assistant)<br/>• timestamp<br/>• tag (Resolved/Inquiring/etc)"]
+    end
+    
+    subgraph "System Architecture"
+        Frontend["⚛️ React Frontend<br/>• Chat Interface<br/>• Document Upload<br/>• Portfolio Analysis<br/>• Session History"]
+        
+        API["🚀 FastAPI Backend<br/>• Chat Endpoints<br/>• CRM Routes<br/>• Upload Processing<br/>• Analysis Engine"]
+        
+        Database["💾 SQLite Database<br/>• User Management<br/>• Conversation History<br/>• Session Tracking"]
+        
+        RAG["🧠 RAG System<br/>• TF-IDF Vectorization<br/>• Document Processing<br/>• Semantic Search"]
+        
+        OpenAI["🤖 OpenAI GPT-3.5<br/>• Conversation AI<br/>• Query Processing<br/>• Content Generation"]
+    end
+    
+    %% Database Relationships
+    User -->|"1:many"| ChatSession
+    User -->|"1:many"| Conversation
+    ChatSession -->|"1:many"| Conversation
+    
+    %% System Flow
+    Frontend <--> API
+    API <--> Database
+    API <--> RAG
+    API <--> OpenAI
+    
+    %% Styling
+    classDef primaryTable fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:#000
+    classDef systemComponent fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    classDef externalService fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000
+    
+    class User,ChatSession,Conversation primaryTable
+    class Frontend,API,Database,RAG systemComponent
+    class OpenAI externalService
+```
+
+---
+
 ## 🔑 What This Project Offers
 
 ### 🎯 Core Capabilities
