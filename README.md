@@ -95,7 +95,7 @@ A modern, intelligent conversational AI chatbot built with FastAPI that combines
 
 ## 🐳 Docker Deployment
 
-### Using Docker Compose (Recommended)
+### Using Docker Compose 
 ```bash
 # Clone and setup
 git clone https://github.com/Orphy123/okadatrial.git
@@ -108,46 +108,6 @@ echo "OPENAI_API_KEY=your-key-here" > .env
 docker-compose up --build
 ```
 
-### Using Docker only
-```bash
-# Build image
-docker build -t rag-chatbot .
-
-# Run container
-docker run -p 8000:8000 -e OPENAI_API_KEY=your-key-here rag-chatbot
-```
-
-## 🌍 Production Deployment
-
-### Option 1: Railway (Recommended)
-1. Push your code to GitHub
-2. Connect to [Railway](https://railway.app)
-3. Add `OPENAI_API_KEY` environment variable
-4. Deploy automatically
-
-### Option 2: Render
-1. Connect your GitHub repository to [Render](https://render.com)
-2. Add environment variables
-3. Deploy with the included `Procfile`
-
-### Option 3: VPS/Cloud Server
-```bash
-# Install dependencies
-sudo apt update && sudo apt install python3-pip nginx
-
-# Clone repository
-git clone https://github.com/Orphy123/okadatrial.git
-cd okadatrial
-
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Setup with PM2
-npm install -g pm2
-pm2 start "uvicorn app.main:app --host 0.0.0.0 --port 8000" --name rag-chatbot
-pm2 startup
-pm2 save
-```
 
 ## 📋 API Reference
 
@@ -219,51 +179,11 @@ python quick_test.py
 python verify_setup.py
 ```
 
-## 📁 Project Structure
-
-```
-okadatrial/
-├── app/                      # FastAPI application
-│   ├── main.py              # Application entry point
-│   ├── chat.py              # Chat endpoints
-│   ├── analyze.py           # Portfolio analysis
-│   ├── rag.py               # RAG system
-│   ├── crm.py               # Database models
-│   └── document_processor.py # Document handling
-├── data/                     # Data storage
-│   └── HackathonInternalKnowledgeBase.csv
-├── models/                   # AI models (future)
-├── tests/                    # Test files
-├── index.html               # Frontend
-├── script.js                # Frontend JavaScript
-├── styles.css               # Frontend styles
-├── requirements.txt         # Python dependencies
-├── Dockerfile              # Container definition
-├── docker-compose.yml      # Multi-container setup
-├── Procfile                # Deployment configuration
-└── README.md               # This file
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-```env
-OPENAI_API_KEY=your-openai-api-key-here
-DATABASE_URL=sqlite:///./crm.db
-DEBUG=false
-ENVIRONMENT=production
-```
-
-### RAG Configuration
-- **Chunk Size**: 1000 characters
-- **Overlap**: 200 characters
-- **Top-K Results**: 3 documents
-- **Similarity Threshold**: 0.1
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+2. Create a feature branch (`git checkout -b feature/feature_a`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
@@ -271,12 +191,6 @@ ENVIRONMENT=production
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- OpenAI for the GPT-3.5 API
-- FastAPI for the excellent framework
-- The open-source community for the amazing tools
 
 ## 📞 Support
 
