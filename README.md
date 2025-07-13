@@ -2,11 +2,6 @@
 
 A modern, intelligent conversational AI chatbot built with FastAPI that combines Retrieval-Augmented Generation (RAG) with natural language portfolio analysis for commercial real estate.
 
-## 🚀 Live Demo
-
-- **Frontend**: [Your Live Site](https://your-domain.com)
-- **API Documentation**: [API Docs](https://your-api-domain.com/docs)
-- **GitHub Repository**: [okadatrial](https://github.com/Orphy123/okadatrial)
 
 ## ✨ Features
 
