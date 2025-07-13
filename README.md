@@ -1,298 +1,136 @@
-# 🏢 AI Real Estate Portfolio Assistant
+# 🏢 AI-Powered Commercial Real Estate Assistant
 
-A modern, intelligent conversational AI chatbot built with FastAPI that combines Retrieval-Augmented Generation (RAG) with natural language portfolio analysis for commercial real estate.
-
-## 🚀 Live Demo
-
-- **Frontend**: [Your Live Site](https://your-domain.com)
-- **API Documentation**: [API Docs](https://your-api-domain.com/docs)
-- **GitHub Repository**: [okadatrial](https://github.com/Orphy123/okadatrial)
-
-## ✨ Features
-
-### 🤖 Core AI Capabilities
-- **RAG-Powered Chat**: Context-aware responses using uploaded documents
-- **OpenAI Integration**: Powered by GPT-3.5-turbo for intelligent conversations
-- **Multi-format Document Support**: PDF, DOCX, TXT, CSV, JSON
-- **Semantic Search**: TF-IDF vectorization for efficient document retrieval
-
-### 🏢 Portfolio Analysis
-- **Natural Language Queries**: "Show me properties above 15,000 SF with rent below $90/SF"
-- **Intelligent Data Filtering**: Automatic query parsing and structured filtering
-- **AI-Generated Insights**: Comprehensive analysis and summaries
-- **Portfolio Statistics**: Performance metrics and overview data
-
-### 💼 CRM Integration
-- **Conversation Logging**: All interactions stored in SQLite database
-- **User Management**: Complete user tracking and session management
-- **Message Tagging**: Automatic categorization of conversations
-- **History Persistence**: Conversation continuity across sessions
-
-### 📊 Analytics Dashboard
-- **Portfolio Statistics**: Real-time property metrics
-- **Interactive Charts**: Visual data representation
-- **Export Capabilities**: Data export in multiple formats
-- **Performance Tracking**: Investment analysis tools
-
-## 🛠️ Tech Stack
-
-### Backend
-- **FastAPI**: High-performance async API framework
-- **SQLAlchemy**: Database ORM with SQLite
-- **OpenAI API**: GPT-3.5-turbo for AI responses
-- **scikit-learn**: Machine learning for document similarity
-- **Pandas**: Data manipulation and analysis
-- **Uvicorn**: ASGI server for production
-
-### Frontend
-- **Vanilla JavaScript**: Modern ES6+ features
-- **CSS3**: Responsive design with Flexbox/Grid
-- **HTML5**: Semantic markup
-- **Font Awesome**: Icon library
-- **Google Fonts**: Typography
-
-### AI & ML
-- **OpenAI GPT-3.5**: Language model for conversations
-- **TF-IDF Vectorization**: Document similarity search
-- **Natural Language Processing**: Query parsing and analysis
-- **RAG Architecture**: Retrieval-Augmented Generation
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.11+
-- OpenAI API key
-- Git
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Orphy123/okadatrial.git
-   cd okadatrial
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-   ```bash
-   # Create .env file
-   echo "OPENAI_API_KEY=your-openai-api-key-here" > .env
-   ```
-
-4. **Initialize the database**
-   ```bash
-   python setup_project.py
-   ```
-
-5. **Load sample data**
-   ```bash
-   python ingest_knowledge_base.py
-   ```
-
-6. **Start the server**
-   ```bash
-   uvicorn app.main:app --reload --port 8000
-   ```
-
-7. **Open your browser**
-   - Frontend: http://localhost:8000
-   - API Docs: http://localhost:8000/docs
-
-## 🐳 Docker Deployment
-
-### Using Docker Compose (Recommended)
-```bash
-# Clone and setup
-git clone https://github.com/Orphy123/okadatrial.git
-cd okadatrial
-
-# Create .env file
-echo "OPENAI_API_KEY=your-key-here" > .env
-
-# Build and run
-docker-compose up --build
-```
-
-### Using Docker only
-```bash
-# Build image
-docker build -t rag-chatbot .
-
-# Run container
-docker run -p 8000:8000 -e OPENAI_API_KEY=your-key-here rag-chatbot
-```
-
-## 🌍 Production Deployment
-
-### Option 1: Railway (Recommended)
-1. Push your code to GitHub
-2. Connect to [Railway](https://railway.app)
-3. Add `OPENAI_API_KEY` environment variable
-4. Deploy automatically
-
-### Option 2: Render
-1. Connect your GitHub repository to [Render](https://render.com)
-2. Add environment variables
-3. Deploy with the included `Procfile`
-
-### Option 3: VPS/Cloud Server
-```bash
-# Install dependencies
-sudo apt update && sudo apt install python3-pip nginx
-
-# Clone repository
-git clone https://github.com/Orphy123/okadatrial.git
-cd okadatrial
-
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Setup with PM2
-npm install -g pm2
-pm2 start "uvicorn app.main:app --host 0.0.0.0 --port 8000" --name rag-chatbot
-pm2 startup
-pm2 save
-```
-
-## 📋 API Reference
-
-### Chat Endpoints
-- `POST /chat/` - Chat with AI assistant
-- `POST /chat/upload_docs` - Upload documents for RAG
-- `POST /chat/add-documents` - Add documents via JSON
-
-### Portfolio Analysis
-- `POST /analyze/analyze_portfolio` - Natural language portfolio queries
-- `GET /analyze/portfolio_stats` - Portfolio statistics
-
-### CRM Management
-- `POST /crm/create_user` - Create new user
-- `GET /crm/conversations/{user_id}` - Get conversation history
-- `PUT /crm/tag_message` - Tag messages
-
-## 📊 Example Usage
-
-### Chat with RAG
-```bash
-curl -X POST "http://localhost:8000/chat/" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user_id": "user123",
-    "message": "What properties do you recommend for investment?",
-    "use_rag": true
-  }'
-```
-
-### Portfolio Analysis
-```bash
-curl -X POST "http://localhost:8000/analyze/analyze_portfolio" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user_id": "investor_123",
-    "query": "Show me all properties above 15,000 SF with rent below $90/SF"
-  }'
-```
-
-### Document Upload
-```bash
-curl -X POST "http://localhost:8000/chat/upload_docs" \
-  -F "files=@property_analysis.pdf" \
-  -F "files=@market_report.docx"
-```
-
-## 🧪 Testing
-
-### Run All Tests
-```bash
-python test_project.py
-```
-
-### Run Specific Tests
-```bash
-# Test portfolio analysis
-python test_analyze.py
-
-# Test RAG functionality
-python test_rag_query.py
-
-# Quick health check
-python quick_test.py
-```
-
-### Verify Setup
-```bash
-python verify_setup.py
-```
-
-## 📁 Project Structure
-
-```
-okadatrial/
-├── app/                      # FastAPI application
-│   ├── main.py              # Application entry point
-│   ├── chat.py              # Chat endpoints
-│   ├── analyze.py           # Portfolio analysis
-│   ├── rag.py               # RAG system
-│   ├── crm.py               # Database models
-│   └── document_processor.py # Document handling
-├── data/                     # Data storage
-│   └── HackathonInternalKnowledgeBase.csv
-├── models/                   # AI models (future)
-├── tests/                    # Test files
-├── index.html               # Frontend
-├── script.js                # Frontend JavaScript
-├── styles.css               # Frontend styles
-├── requirements.txt         # Python dependencies
-├── Dockerfile              # Container definition
-├── docker-compose.yml      # Multi-container setup
-├── Procfile                # Deployment configuration
-└── README.md               # This file
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-```env
-OPENAI_API_KEY=your-openai-api-key-here
-DATABASE_URL=sqlite:///./crm.db
-DEBUG=false
-ENVIRONMENT=production
-```
-
-### RAG Configuration
-- **Chunk Size**: 1000 characters
-- **Overlap**: 200 characters
-- **Top-K Results**: 3 documents
-- **Similarity Threshold**: 0.1
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- OpenAI for the GPT-3.5 API
-- FastAPI for the excellent framework
-- The open-source community for the amazing tools
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/Orphy123/okadatrial/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Orphy123/okadatrial/discussions)
-- **Email**: [Your Email](mailto:your-email@example.com)
+A full-stack, multi-agentic platform designed for the Commercial Real Estate (CRE) sector, combining Retrieval-Augmented Generation (RAG), conversational AI, and intelligent CRM tracking. Originally built as a Python-based RESTful API system, this project has been extended with a modern React frontend to showcase its full capabilities through an intuitive and interactive web interface.
 
 ---
 
-⭐ **Star this repository if you find it helpful!** ⭐
+## 🚀 Overview
+
+This system enables real-time, natural language interaction with property data, documents, and CRM intelligence. By integrating OpenAI's GPT-3.5 with a custom RAG pipeline and lightweight CRM, users can perform portfolio analysis, upload and search documents, and revisit prior sessions — all in one place.
+
+---
+
+## 🔑 What This Project Offers
+
+### 🎯 Core Capabilities
+
+**🤖 Conversational AI with RAG**
+- **RAG-Enhanced Responses**: Contextually aware conversations using uploaded documents (PDFs, TXT, CSV, JSON)
+- **Persistent Memory**: Full conversation history with session management across user interactions
+- **Automatic Tagging**: AI-powered categorization of conversations (Resolved, Inquiring, Portfolio Analysis)
+- **Multi-Document Processing**: Semantic search across large document collections using TF-IDF vectorization
+
+**📊 Natural Language Portfolio Analyzer**
+- **Smart Query Parsing**: Convert natural language queries into structured database filters
+  - *"Show me properties above 15,000 SF with rent below $90/SF"*
+  - *"Find high GCI properties above $300,000 on Broadway"*
+- **Visual Analytics**: Automatic generation of charts and visualizations for analysis results
+- **Export Capabilities**: Download filtered results as CSV files
+- **Real-time Statistics**: Portfolio performance metrics and overview dashboards
+
+**👥 Intelligent CRM Integration**
+- **User Management**: Automatic user creation and profile management
+- **Conversation Logging**: Complete interaction history with timestamps and metadata
+- **Session Continuity**: Seamless conversation flow across multiple sessions
+- **Smart Categorization**: Automatic tagging based on conversation content and context
+
+**🖼️ React Web Interface (Frontend Showcase)**
+While the backend was the primary deliverable, a polished React frontend was developed to demonstrate real-time interactivity. It enables:
+- Seamless chat interface with AI
+- Document uploads for RAG
+- A dedicated portfolio analysis dashboard
+- CRM browsing and tagging
+- Session history view with reloadable conversations
+
+---
+
+## 🛠️ Technology Stack
+
+### 🧠 Backend (FastAPI)
+- Python 3.11+, FastAPI, Uvicorn
+- OpenAI GPT-3.5 for AI responses
+- SQLite + SQLAlchemy for CRM
+- TF-IDF (Scikit-learn) for semantic search
+- Matplotlib for dynamic chart generation
+- Pandas for data filtering and transformation
+
+### 💻 Frontend (React + TailwindCSS)
+- React 18 (Vite)
+- TailwindCSS for styling
+- Axios for backend communication
+- Framer Motion for smooth transitions
+- Built-in support for chat, uploads, analysis, and history
+
+---
+
+## 🧪 Features by Requirement (from Hackathon Brief)
+
+| Requirement | Implemented? | Notes |
+|-------------|--------------|-------|
+| Conversational Chatbot | ✅ | RAG-enhanced, persistent memory |
+| Custom CRM | ✅ | Tracks users, tags messages, stores conversations |
+| CRM-based Context Recall | ✅ | Conversations linked by user/session ID |
+| RESTful API Endpoints | ✅ | All required + more (e.g., analysis tools) |
+| Document Upload & RAG | ✅ | Supports PDF, TXT, CSV, JSON |
+| Extended Frontend (React) | ✅ | Added for demonstration (goes beyond base requirement) |
+| Session Query History | ✅ | View and reload prior sessions |
+| Charts & Exports | ✅ | Visuals and CSV download from analyzer |
+
+---
+
+## 📎 Setup Instructions
+
+### 🐍 Backend
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+echo "OPENAI_API_KEY=your-key-here" > .env
+
+# Initialize DB and ingest sample data
+python setup_project.py
+python ingest_knowledge_base.py
+
+# Run backend
+uvicorn app.main:app --reload --port 8000
+```
+
+### ⚛️ Frontend
+```bash
+cd src
+npm install
+npm run dev
+```
+
+---
+
+## 🌐 Access
+
+- **Frontend App**: http://localhost:5173
+- **API Docs**: http://localhost:8000/docs
+- **Portfolio Analysis Endpoint**: `/analyze_portfolio`
+- **Upload Documents**: `/upload_docs`
+- **CRM**: `/crm/*` endpoints
+- **Session History**: `/history/sessions/{user_id}`
+
+---
+
+## 📁 Example Use Case
+
+1. Upload real estate documents
+2. Ask the AI:  
+   _“Which properties on Broadway have the highest GCI over 3 years?”_
+3. View results in a table with a downloadable CSV
+4. Track user interaction in CRM and tag messages as needed
+5. Revisit a past session by clicking its timestamped entry in history
+
+---
+
+## 🧠 Final Note
+
+This project began as a Python-based REST API per the hackathon brief, but was extended to include a fully functional frontend to better demonstrate real-world usability and interaction.
+
+Whether you're analyzing a portfolio, chatting with the AI assistant, or managing user sessions, this system provides a comprehensive and modern toolset tailored for the commercial real estate domain.
+
+---
